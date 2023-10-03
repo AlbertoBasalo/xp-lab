@@ -1,5 +1,5 @@
 const activitiesRouter = require("./activities/activities.router");
-const bookingsRouter = require("./bookings.router");
+const bookingsRouter = require("./bookings/bookings.router");
 
 function configure(app) {
   const version = "1";

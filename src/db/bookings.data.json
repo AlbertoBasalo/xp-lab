@@ -1,0 +1,37 @@
+[
+  {
+    "id": 1,
+    "activityId": 1,
+    "userId": 1,
+    "participants": 2,
+    "status": "confirmed"
+  },
+  {
+    "id": 2,
+    "activityId": 2,
+    "userId": 1,
+    "participants": 2,
+    "status": "confirmed"
+  },
+  {
+    "id": 3,
+    "activityId": 2,
+    "userId": 3,
+    "participants": 2,
+    "status": "confirmed"
+  },
+  {
+    "id": 4,
+    "activityId": 1,
+    "userId": 2,
+    "participants": 2,
+    "status": "pending"
+  },
+  {
+    "id": 5,
+    "activityId": 2,
+    "userId": 2,
+    "participants": 2,
+    "status": "pending"
+  }
+]

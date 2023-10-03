@@ -1,5 +1,5 @@
 const activitiesRepository = require("./activities.memory.repository");
-
+const bookingsRepository = require("../bookings/bookings.memory.repository");
 async function readActivities() {
   return await activitiesRepository.selectActivities();
 }
@@ -9,7 +9,12 @@ async function readActivity(id) {
 }
 
 async function readActivityBookings(id) {
-  return (await activitiesRepository.selectActivityBookings(id)) || [];
+  const activity = await activitiesRepository.selectActivity(id);
+  // ToDo: Use custom errors
+  if (!activity) {
+    throw new Error(`Activity with id: ${id} not found `);
+  }
+  return await bookingsRepository.selectBookingByActivityId(id);
 }
 
 async function createActivity(activity) {
