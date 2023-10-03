@@ -1,4 +1,4 @@
-const activitiesRouter = require("./activities.router");
+const activitiesRouter = require("./activities/activities.router");
 const bookingsRouter = require("./bookings.router");
 
 function configure(app) {
