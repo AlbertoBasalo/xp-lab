@@ -1,15 +1,18 @@
-// routers defines the routes for the activities endpoint
 const express = require("express");
-const controller = require("./activities.controller");
+const activitiesController = require("./activities.controller");
 
+/**
+ * Defines the routes for the activities endpoint.
+ * Wires each route with its service function.
+ */
 const router = express.Router();
 
 router
-  .get("/", controller.getActivities)
-  .get("/:id", controller.getActivity)
-  .get("/:id/bookings", controller.getActivityBookings)
-  .post("/", controller.postActivity)
-  .put("/:id", controller.putActivity)
-  .delete("/:id", controller.deleteActivity);
+  .get("/", activitiesController.getActivities)
+  .get("/:id", activitiesController.getActivity)
+  .get("/:id/bookings", activitiesController.getActivityBookings)
+  .post("/", activitiesController.postActivity)
+  .put("/:id", activitiesController.putActivity)
+  .delete("/:id", activitiesController.deleteActivity);
 
 module.exports = router;

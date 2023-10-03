@@ -1,5 +1,3 @@
-// Controller should deal with API logic, calling services and sending responses
-
 const activitiesService = require("./activities.service");
 
 async function getActivities(req, res, next) {
@@ -69,7 +67,12 @@ async function deleteActivity(req, res, next) {
     next(error);
   }
 }
-module.exports = {
+
+/**
+ * Process requests and generates responses for the Activities EndPoint
+ * @description deals with API logic, calling services and sending responses
+ */
+const activitiesController = {
   getActivities,
   getActivity,
   getActivityBookings,
@@ -77,3 +80,5 @@ module.exports = {
   putActivity,
   deleteActivity,
 };
+
+module.exports = activitiesController;

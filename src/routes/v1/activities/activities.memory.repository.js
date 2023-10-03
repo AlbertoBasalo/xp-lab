@@ -61,7 +61,11 @@ async function deleteActivity(id) {
   ACTIVITIES.splice(index, 1);
 }
 
-module.exports = {
+/**
+ * Data persistance for Activity records
+ * @description Specific for in memory database
+ */
+const activitiesRepository = {
   selectActivities,
   selectActivity,
   selectActivityBookings,
@@ -69,3 +73,5 @@ module.exports = {
   updateActivity,
   deleteActivity,
 };
+
+module.exports = activitiesRepository;

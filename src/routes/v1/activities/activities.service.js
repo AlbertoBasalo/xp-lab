@@ -1,6 +1,4 @@
-// Services should not know about the HTTP layer nor the database layer implementation details
-
-const activitiesRepository = require("./activities.repository");
+const activitiesRepository = require("./activities.memory.repository");
 
 async function readActivities() {
   return await activitiesRepository.selectActivities();
@@ -25,8 +23,11 @@ async function updateActivity(id, activity) {
 async function deleteActivity(id) {
   return await activitiesRepository.deleteActivity(id);
 }
-
-module.exports = {
+/**
+ * Business logic for Activities entities
+ * @description should not know about the HTTP layer nor the database layer implementation details
+ */
+const activitiesService = {
   readActivities,
   readActivity,
   readActivityBookings,
@@ -34,3 +35,5 @@ module.exports = {
   updateActivity,
   deleteActivity,
 };
+
+module.exports = activitiesService;
