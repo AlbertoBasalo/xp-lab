@@ -5,24 +5,29 @@ async function readActivities() {
 }
 
 async function readActivity(id) {
-  return await activitiesRepository.selectActivity(id);
+  const activity = await activitiesRepository.selectActivity(id);
+  if (!activity) {
+    throw new AppError(`Activity with id: ${id} not found `, "DATA", 404);
+  }
+  return activity;
 }
 
 async function readActivityBookings(id) {
-  const activity = await activitiesRepository.selectActivity(id);
-  // ToDo: Use custom errors
-  if (!activity) {
-    throw new Error(`Activity with id: ${id} not found `);
-  }
+  await readActivity(id);
   return await bookingsRepository.selectBookingByActivityId(id);
 }
 
 async function createActivity(activity) {
+  activity.id = new Date().getTime();
+  activity.timestamp = new Date().toISOString();
   return await activitiesRepository.insertActivity(activity);
 }
 
 async function updateActivity(id, activity) {
-  return await activitiesRepository.updateActivity(id, activity);
+  const activity = await activitiesRepository.selectActivity(id);
+  activity.timestamp = new Date().toISOString();
+  await activitiesRepository.updateActivity(id, activity);
+  return activity;
 }
 
 async function deleteActivity(id) {

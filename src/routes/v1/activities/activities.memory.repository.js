@@ -9,6 +9,7 @@ async function selectActivity(id) {
 
 async function insertActivity(activity) {
   ACTIVITIES.push(activity);
+  return activity;
 }
 
 async function updateActivity(id, activity) {

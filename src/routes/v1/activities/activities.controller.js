@@ -1,12 +1,9 @@
 const activitiesService = require("./activities.service");
 
-// ToDo: generalize error handling
-// ToDo: error types: validation, not found, not authorized, business etc.
-
 async function getActivities(req, res, next) {
   try {
-    const data = await activitiesService.readActivities();
-    res.json(data);
+    const body = await activitiesService.readActivities();
+    res.json(body);
   } catch (error) {
     next(error);
   }
@@ -15,13 +12,8 @@ async function getActivities(req, res, next) {
 async function getActivity(req, res, next) {
   try {
     const id = getIdFromUrl(req);
-    const data = await activitiesService.readActivity(id);
-    if (!data) {
-      return res.status(404).send({
-        message: `Activity with id: ${id} not found `,
-      });
-    }
-    res.json(data);
+    const body = await activitiesService.readActivity(id);
+    res.json(body);
   } catch (error) {
     next(error);
   }
@@ -30,22 +22,17 @@ async function getActivity(req, res, next) {
 async function getActivityBookings(req, res, next) {
   try {
     const id = getIdFromUrl(req);
-    const data = await activitiesService.readActivityBookings(id);
-    res.json(data);
+    const body = await activitiesService.readActivityBookings(id);
+    res.json(body);
   } catch (error) {
-    if (error.message.includes("not found")) {
-      return res.status(404).send({
-        message: error.message,
-      });
-    }
     next(error);
   }
 }
 
 async function postActivity(req, res, next) {
   try {
-    const data = await activitiesService.createActivity(req.body);
-    res.status(201).json(data);
+    const body = await activitiesService.createActivity(req.body);
+    res.status(201).json(body);
   } catch (error) {
     next(error);
   }
@@ -54,8 +41,8 @@ async function postActivity(req, res, next) {
 async function putActivity(req, res, next) {
   try {
     const id = getIdFromUrl(req);
-    const data = await activitiesService.updateActivity(id, req.body);
-    res.json(data);
+    const body = await activitiesService.updateActivity(id, req.body);
+    res.json(body);
   } catch (error) {
     next(error);
   }
@@ -75,7 +62,10 @@ async function deleteActivity(req, res, next) {
 function getIdFromUrl(req) {
   const id = req.params.id;
   if (!id) {
-    throw new Error("Id is required");
+    throw new AppError("Id is required", "VALIDATION", 400);
+  }
+  if (isNaN(id)) {
+    throw new AppError("Id must be a number", "VALIDATION", 400);
   }
   return id;
 }
