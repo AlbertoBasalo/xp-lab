@@ -1,13 +1,14 @@
 const express = require("express");
-const app = express();
+var cors = require("cors");
+const helmet = require("helmet");
 const routes = require("./routes/v1");
-const { errorHandler } = require("./shared");
+const { errorHandler, logger } = require("./shared");
 const PORT = 3000;
+const app = express();
+app.use(cors());
+app.use(helmet());
 
 // ToDo: use environment variables
-// ToDo: use helmet and cors
-// ToDo: use morgan or similar for logging
-//
 
 app.get("/", (req, res) => {
   res.send("Activity Bookings API");
@@ -15,4 +16,4 @@ app.get("/", (req, res) => {
 app.use(express.json());
 routes.configure(app);
 app.use(errorHandler);
-app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
+app.listen(PORT, () => logger.info(`Server listening on port ${PORT}, ${process.env.NODE_ENV} environment `));

@@ -2,7 +2,7 @@
  * Controller wrapper using command pattern
  * @param {*} serviceFn The service function to be called
  * @param {*} statusCode The status code to be returned (default 200)
- * @param {*} dataFns The functions to get data from the request (default undefined)
+ * @param {*} dataFns The functions to get data arguments from the request (default undefined)
  */
 function doController(serviceFn, statusCode, ...dataFns) {
   return async (req, res, next) => {

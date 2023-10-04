@@ -1,4 +1,5 @@
 const AppError = require("./../errors/app-error");
+
 function getId(req) {
   const id = req.params.id;
   if (!id) {
