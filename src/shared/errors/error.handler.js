@@ -1,15 +1,16 @@
 const ErrorHandler = (err, req, res, next) => {
   const errStatus = err.statusCode || 500;
   const errMsg = err.message || "Something went wrong";
-  const errorInfo = {
+  const errInfo = {
     success: false,
     status: errStatus,
     message: errMsg,
     kind: err.kind,
     stack: process.env.NODE_ENV === "development" ? err.stack : {},
   };
-  console.log(errorInfo);
-  res.status(errStatus).json(errorInfo);
+  // ToDo: use a logger
+  console.warn({ errInfo, stack: err.stack });
+  res.status(errStatus).json(errInfo);
 };
 
-export default ErrorHandler;
+module.exports = ErrorHandler;

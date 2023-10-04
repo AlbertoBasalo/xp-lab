@@ -1,5 +1,6 @@
 const activitiesRepository = require("./activities.memory.repository");
 const bookingsRepository = require("../bookings/bookings.memory.repository");
+const { AppError } = require("./../../../shared");
 async function readActivities() {
   return await activitiesRepository.selectActivities();
 }
@@ -20,14 +21,15 @@ async function readActivityBookings(id) {
 async function createActivity(activity) {
   activity.id = new Date().getTime();
   activity.timestamp = new Date().toISOString();
+  console.log(activity);
   return await activitiesRepository.insertActivity(activity);
 }
 
 async function updateActivity(id, activity) {
-  const activity = await activitiesRepository.selectActivity(id);
-  activity.timestamp = new Date().toISOString();
-  await activitiesRepository.updateActivity(id, activity);
-  return activity;
+  const current = await readActivity(id);
+  const updated = { ...current, ...activity, timestamp: new Date().toISOString() };
+  await activitiesRepository.updateActivity(id, updated);
+  return updated;
 }
 
 async function deleteActivity(id) {
