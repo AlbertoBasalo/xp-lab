@@ -1,6 +1,6 @@
 const express = require("express");
 const activitiesService = require("./activities.service");
-const { getId, getBody, doController } = require("../../shared");
+const { control, getId, getBody } = require("../../middleware");
 
 /**
  * Defines the routes for the activities endpoint.
@@ -9,11 +9,11 @@ const { getId, getBody, doController } = require("../../shared");
 const router = express.Router();
 
 router
-  .get("/", doController(activitiesService.readActivities))
-  .get("/:id", doController(activitiesService.readActivity, 200, getId))
-  .get("/:id/bookings", doController(activitiesService.readActivityBookings, 200, getId))
-  .post("/", doController(activitiesService.createActivity, 201, getBody))
-  .put("/:id", doController(activitiesService.updateActivity, 200, getId, getBody))
-  .delete("/:id", doController(activitiesService.deleteActivity, 204, getId));
+  .get("/", control(activitiesService.readActivities))
+  .get("/:id", getId, control(activitiesService.readActivity))
+  .get("/:id/bookings", getId, control(activitiesService.readActivityBookings))
+  .post("/", getBody, control(activitiesService.createActivity))
+  .put("/:id", getId, getBody, control(activitiesService.updateActivity))
+  .delete("/:id", getId, control(activitiesService.deleteActivity));
 
 module.exports = router;
