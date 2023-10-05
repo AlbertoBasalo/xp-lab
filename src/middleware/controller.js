@@ -1,5 +1,11 @@
 const { AppError } = require("../shared");
 
+/**
+ *  Middleware to extract the id from the request.
+ * @description Adds the id to the args array in the request.
+ * @returns The id of the request.
+ * @throws An error if the id is not present or not a number.
+ */
 const getId = (req, res, next) => {
   const id = req.params.id;
   if (!id) {
@@ -13,6 +19,12 @@ const getId = (req, res, next) => {
   next();
 };
 
+/**
+ * Middleware to extract the body from the request.
+ * @description Adds the body to the args array in the request.
+ * @returns The body of the request.
+ * @throws An error if the body is not present.
+ */
 const getBody = (req, res, next) => {
   const body = req.body;
   if (!body) {
@@ -23,6 +35,12 @@ const getBody = (req, res, next) => {
   next();
 };
 
+/**
+ * A function to control the flow of the request and ensure content.
+ * @param {*} serviceFn The service function to call.
+ * @returns Continues the flow of the request.
+ * @throws An error if the service function throws an error.
+ */
 const control = (serviceFn) => {
   return async (req, res, next) => {
     try {
@@ -36,13 +54,13 @@ const control = (serviceFn) => {
 
 const call = async (req, serviceFn) => {
   const args = req.args;
-  getUserId(req, args);
+  setUserId(req, args);
   if (!args) return await serviceFn();
   return await serviceFn(...args);
 };
 
-const getUserId = (req, args) => {
-  if (req.auth) {
+const setUserId = (req, args) => {
+  if (req.auth && req.auth.sub) {
     if (!args) req.args = [];
     args.push(+req.auth.sub);
   }

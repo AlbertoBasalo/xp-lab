@@ -21,12 +21,12 @@ const ErrorHandler = (err, req, res, next) => {
   res.status(errStatus).json(errInfo);
 };
 
-const configure = (app, logger) => {
+const handleErrors = (app, logger) => {
   _logger = logger;
   app.use(ErrorHandler);
 };
 
-module.exports = { configure };
+module.exports = { handleErrors };
 function checkJwtErrors(err) {
   const jtwMessages = ["No authorization token was found", "invalid token"];
   if (jtwMessages.includes(err.message)) {

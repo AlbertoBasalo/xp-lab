@@ -17,24 +17,37 @@ const apiKey = (req, res, next) => {
   next();
 };
 
+/**
+ * Guard routes that require a valid JWT.
+ * The User ID is available in req.user.sub
+ */
 const guardUser = expressjwt({
   secret,
   algorithms,
   credentialsRequired: true,
 });
 
+/**
+ * Get a user from a valid JWT, but don't require it.
+ * The User ID (if any) is available in req.user.sub
+ */
 const getUser = expressjwt({
   secret,
   algorithms,
   credentialsRequired: false,
 });
 
+/**
+ * Generates a valid JWT for a user ID.
+ * @param {*} userId The user ID.
+ * @returns A JWT for the user ID.
+ */
 const signUser = (userId) => jwt.sign({ sub: userId }, secret, expiration);
 
-const configure = (app) => {
+const useSecurity = (app) => {
   app.use(cors());
   app.use(helmet());
   app.use(apiKey);
 };
 
-module.exports = { configure, guardUser, getUser, signUser };
+module.exports = { useSecurity, guardUser, getUser, signUser };

@@ -1,19 +1,21 @@
 const express = require("express");
 const service = require("./activities.service");
-const { control, getId, getBody, security } = require("../../middleware");
+const { control, getId, getBody, guardUser } = require("../../middleware");
 
 /**
  * Defines the routes for the activities endpoint.
+ * Checks if the user is authenticated.
+ * Adds a middleware to extract args from the request.
  * Wires each route with its service function.
  */
 const router = express.Router();
 
 router
-  .get("/", control(service.readActivities))
-  .get("/:id", getId, control(service.readActivity))
-  .get("/:id/bookings", getId, control(service.readActivityBookings))
-  .post("/", security.guardUser, getBody, control(service.createActivity))
-  .put("/:id", security.guardUser, getId, getBody, control(service.updateActivity))
-  .delete("/:id", security.guardUser, getId, control(service.deleteActivity));
+  .get("/", control(service.readAll))
+  .get("/:id", getId, control(service.readById))
+  .get("/:id/bookings", getId, control(service.readBookings))
+  .post("/", guardUser, getBody, control(service.create))
+  .put("/:id", guardUser, getId, getBody, control(service.update))
+  .delete("/:id", guardUser, getId, control(service.delete));
 
 module.exports = router;
