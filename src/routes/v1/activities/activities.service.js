@@ -8,7 +8,7 @@ async function readActivities() {
 async function readActivity(id) {
   const activity = await activitiesRepository.selectActivity(id);
   if (!activity) {
-    throw new AppError(`Activity with id: ${id} not found `, "DATA", 404);
+    throw new AppError(`Activity with id: ${id} not found `, "NOT_FOUND", "readActivity");
   }
   return activity;
 }

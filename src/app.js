@@ -1,19 +1,13 @@
 const express = require("express");
-var cors = require("cors");
-const helmet = require("helmet");
 const routes = require("./routes/v1");
-const { errorHandler, logger } = require("./shared");
-const PORT = 3000;
-const app = express();
-app.use(cors());
-app.use(helmet());
-
+const { logger, security } = require("./middleware");
+const { error } = require("./shared");
 // ToDo: use environment variables
+const PORT = 3000;
 
-app.get("/", (req, res) => {
-  res.send("Activity Bookings API");
-});
-app.use(express.json());
+const app = express();
+security.configure(app);
 routes.configure(app);
-app.use(errorHandler);
-app.listen(PORT, () => logger.info(`Server listening on port ${PORT}, ${process.env.NODE_ENV} environment `));
+error.configure(app, logger);
+
+app.listen(PORT, () => logger.info(`Listening on ${PORT}, ${process.env.NODE_ENV} environment`));

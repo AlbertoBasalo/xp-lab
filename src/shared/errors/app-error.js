@@ -3,10 +3,10 @@
  * With an additional properties for the kind of error and HTTP status code
  */
 class AppError extends Error {
-  constructor(message, kind, statusCode) {
+  constructor(message, kind, source) {
     super(message);
     this.kind = kind || "unhandled";
-    this.statusCode = statusCode || 500;
+    this.source = source || "unknown";
   }
 }
 module.exports = AppError;
