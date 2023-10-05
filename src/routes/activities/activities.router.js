@@ -1,6 +1,6 @@
 const express = require("express");
 const activitiesService = require("./activities.service");
-const { getId, getBody, doController } = require("./../../../shared");
+const { getId, getBody, doController } = require("../../shared");
 
 /**
  * Defines the routes for the activities endpoint.

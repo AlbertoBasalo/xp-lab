@@ -1,4 +1,4 @@
-const AppError = require("./../errors/app-error");
+const AppError = require("../models/app-error");
 
 function getId(req) {
   const id = req.params.id;

@@ -1,4 +1,4 @@
-const BOOKINGS = require("../../../db/bookings.data.json");
+const BOOKINGS = require("../../db/bookings.data.json");
 
 async function selectBookings() {
   return BOOKINGS;

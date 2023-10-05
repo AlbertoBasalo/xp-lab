@@ -1,4 +1,4 @@
-const ACTIVITIES = require("../../../db/activities.data.json");
+const ACTIVITIES = require("../../db/activities.data.json");
 
 async function selectActivities() {
   return ACTIVITIES;

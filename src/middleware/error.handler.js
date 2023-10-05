@@ -1,4 +1,4 @@
-let logger;
+let _logger;
 const getStatus = (err) => {
   const kind = err.kind || "unhandled";
   if (kind === "VALIDATION") return 400;
@@ -14,13 +14,13 @@ const ErrorHandler = (err, req, res, next) => {
     kind: err.kind,
     source: err.source,
   };
-  logger.error({ ...errInfo });
+  _logger.error({ ...errInfo });
   const errStatus = getStatus(err);
   res.status(errStatus).json(errInfo);
 };
 
 const configure = (app, logger) => {
-  logger = logger;
+  _logger = logger;
   app.use(ErrorHandler);
 };
 

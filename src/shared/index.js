@@ -1,5 +1,4 @@
-const { getId, getBody } = require("./controller/request.parsers");
+const AppError = require("./models/app-error");
 const doController = require("./controller/controller.command");
-const AppError = require("./errors/app-error");
-const error = require("./errors/error.handler");
-module.exports = { AppError, error, doController, getId, getBody };
+const { getBody, getId } = require("./controller/request.parsers");
+module.exports = { AppError, doController, getBody, getId };

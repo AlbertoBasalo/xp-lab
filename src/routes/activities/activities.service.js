@@ -1,6 +1,7 @@
 const activitiesRepository = require("./activities.memory.repository");
 const bookingsRepository = require("../bookings/bookings.memory.repository");
-const { AppError } = require("./../../../shared");
+const { AppError } = require("../../shared");
+
 async function readActivities() {
   return await activitiesRepository.selectActivities();
 }

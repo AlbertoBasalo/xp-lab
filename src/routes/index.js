@@ -1,8 +1,7 @@
-const express = require("express");
 const activitiesRouter = require("./activities/activities.router");
 const bookingsRouter = require("./bookings/bookings.router");
 
-function configure(app) {
+function configure(app, express) {
   app.get("/", (req, res) => res.send("Activity Bookings API"));
   app.use(express.json());
   const version = "1";
@@ -10,4 +9,9 @@ function configure(app) {
   app.use(`/v${version}/bookings`, bookingsRouter);
 }
 
-module.exports = { configure };
+/**
+ * Defines main routes for the API, attaching controllers.
+ */
+const routes = { configure };
+
+module.exports = routes;
