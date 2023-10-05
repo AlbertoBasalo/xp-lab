@@ -1,3 +1,3 @@
-const AppError = require("./models/app-error");
+const AppError = require("./app-error.class");
 
 module.exports = { AppError };

@@ -1,4 +1,4 @@
-const AppError = require("../shared/models/app-error");
+const { AppError } = require("../shared");
 
 const getId = (req, res, next) => {
   const id = req.params.id;
@@ -8,18 +8,18 @@ const getId = (req, res, next) => {
   if (isNaN(id)) {
     return next(new AppError("Id should be a number", "VALIDATION", "getId"));
   }
-  if (!req.args) req.args = {};
-  req.args = { id, ...req.args };
+  if (!req.args) req.args = [];
+  req.args.push(id);
   next();
 };
 
 const getBody = (req, res, next) => {
   const body = req.body;
   if (!body) {
-    throw new AppError("Body is required", "VALIDATION", "getBody");
+    return next(new AppError("Body is required", "VALIDATION", "getBody"));
   }
-  if (!req.args) req.args = {};
-  req.args = { body, ...req.args };
+  if (!req.args) req.args = [];
+  req.args.push(body);
   next();
 };
 
@@ -36,11 +36,12 @@ const control = (serviceFn) => {
 
 const call = async (req, serviceFn) => {
   const args = req.args;
+  if (req.auth) {
+    if (!args) req.args = [];
+    args.push(+req.auth.sub);
+  }
   if (!args) return await serviceFn();
-  if (args.id && !args.body) return await serviceFn(args.id);
-  if (args.id && args.body) return await serviceFn(args.id, args.body);
-  if (!args.id && args.body) return await serviceFn(args.body);
-  return await serviceFn(args);
+  return await serviceFn(...args);
 };
 
 const getOk = (req) => {

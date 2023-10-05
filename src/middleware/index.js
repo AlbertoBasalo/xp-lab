@@ -1,7 +1,7 @@
 const error = require("./error.handler");
 const logger = require("./logger");
 const security = require("./security");
-const { control, getId, getBody } = require("./args");
+const { control, getId, getBody } = require("./controller");
 
 /**
  * Middleware configuration for security, logging, and error handling

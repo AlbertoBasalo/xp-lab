@@ -9,6 +9,11 @@ const getStatus = (err) => {
 };
 
 const ErrorHandler = (err, req, res, next) => {
+  if (res.headersSent) return next(err);
+  if ((err.message = "No authorization token was found")) {
+    err.kind = "UNAUTHORIZED";
+    err.source = "jwt";
+  }
   const errInfo = {
     message: err.message || "Something went wrong",
     kind: err.kind,

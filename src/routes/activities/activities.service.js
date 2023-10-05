@@ -19,7 +19,8 @@ async function readActivityBookings(id) {
   return await bookingsRepository.selectBookingByActivityId(id);
 }
 
-async function createActivity(activity) {
+async function createActivity(activity, user) {
+  activity.user = user;
   activity.id = new Date().getTime();
   activity.timestamp = new Date().toISOString();
   return await activitiesRepository.insertActivity(activity);

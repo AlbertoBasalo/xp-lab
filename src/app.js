@@ -7,7 +7,7 @@ const { parsed: env } = dotenv.config();
 const app = express();
 
 middleware.security.configure(app);
-routes.configure(app, express, env.apiVersion);
+routes.configure(app, express, env.API_VERSION);
 middleware.error.configure(app, middleware.logger);
 
 app.listen(env.PORT, () => middleware.logger.info(`Listening on ${env.PORT}, ${env.NODE_ENV} environment`));
