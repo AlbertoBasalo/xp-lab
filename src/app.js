@@ -1,12 +1,13 @@
 const express = require("express");
+const dotenv = require("dotenv");
 const routes = require("./routes");
 const middleware = require("./middleware");
-// ToDo: use environment variables
-const PORT = 3000;
 
+const { parsed: env } = dotenv.config();
 const app = express();
+
 middleware.security.configure(app);
-routes.configure(app, express);
+routes.configure(app, express, env.apiVersion);
 middleware.error.configure(app, middleware.logger);
 
-app.listen(PORT, () => middleware.logger.info(`Listening on ${PORT}, ${process.env.NODE_ENV} environment`));
+app.listen(env.PORT, () => middleware.logger.info(`Listening on ${env.PORT}, ${env.NODE_ENV} environment`));
