@@ -1,5 +1,5 @@
 const express = require("express");
-const activitiesService = require("./activities.service");
+const service = require("./activities.service");
 const { control, getId, getBody, security } = require("../../middleware");
 
 /**
@@ -9,11 +9,11 @@ const { control, getId, getBody, security } = require("../../middleware");
 const router = express.Router();
 
 router
-  .get("/", control(activitiesService.readActivities))
-  .get("/:id", getId, control(activitiesService.readActivity))
-  .get("/:id/bookings", getId, control(activitiesService.readActivityBookings))
-  .post("/", security.getUser, getBody, control(activitiesService.createActivity))
-  .put("/:id", getId, getBody, control(activitiesService.updateActivity))
-  .delete("/:id", getId, control(activitiesService.deleteActivity));
+  .get("/", control(service.readActivities))
+  .get("/:id", getId, control(service.readActivity))
+  .get("/:id/bookings", getId, control(service.readActivityBookings))
+  .post("/", security.guardUser, getBody, control(service.createActivity))
+  .put("/:id", security.guardUser, getId, getBody, control(service.updateActivity))
+  .delete("/:id", security.guardUser, getId, control(service.deleteActivity));
 
 module.exports = router;

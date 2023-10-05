@@ -36,12 +36,16 @@ const control = (serviceFn) => {
 
 const call = async (req, serviceFn) => {
   const args = req.args;
+  getUserId(req, args);
+  if (!args) return await serviceFn();
+  return await serviceFn(...args);
+};
+
+const getUserId = (req, args) => {
   if (req.auth) {
     if (!args) req.args = [];
     args.push(+req.auth.sub);
   }
-  if (!args) return await serviceFn();
-  return await serviceFn(...args);
 };
 
 const getOk = (req) => {

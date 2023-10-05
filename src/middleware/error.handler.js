@@ -10,10 +10,7 @@ const getStatus = (err) => {
 
 const ErrorHandler = (err, req, res, next) => {
   if (res.headersSent) return next(err);
-  if ((err.message = "No authorization token was found")) {
-    err.kind = "UNAUTHORIZED";
-    err.source = "jwt";
-  }
+  checkJwtErrors(err);
   const errInfo = {
     message: err.message || "Something went wrong",
     kind: err.kind,
@@ -30,3 +27,10 @@ const configure = (app, logger) => {
 };
 
 module.exports = { configure };
+function checkJwtErrors(err) {
+  const jtwMessages = ["No authorization token was found", "invalid token"];
+  if (jtwMessages.includes(err.message)) {
+    err.kind = "UNAUTHORIZED";
+    err.source = "jwt";
+  }
+}
