@@ -1,6 +1,6 @@
 const express = require("express");
-const service = require("./activities.service");
 const { control, getId, getBody, guardUser } = require("../../middleware");
+const service = require("./activities.service");
 
 /**
  * Defines the routes for the activities endpoint.

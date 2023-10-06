@@ -1,8 +1,8 @@
 const { AppError, MemoryRepository } = require("../../shared");
-const activities = require("../../db/activities.data.json");
+// const activities = require("../../db/activities.data.json");
 const bookings = require("../../db/bookings.data.json");
 
-const activitiesRepository = MemoryRepository(activities);
+const activitiesRepository = MemoryRepository([]);
 const bookingsRepository = MemoryRepository(bookings);
 
 async function readAll() {

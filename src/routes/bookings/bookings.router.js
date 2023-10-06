@@ -1,4 +1,6 @@
 const express = require("express");
+const { control, getId, getBody, guardUser } = require("../../middleware");
+const service = require("./bookings.service");
 
 /**
  * Defines the routes for the bookings endpoint.

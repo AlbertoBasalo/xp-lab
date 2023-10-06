@@ -5,6 +5,7 @@ const getStatus = (err) => {
   if (kind === "NOT_FOUND") return 404;
   if (kind === "UNAUTHORIZED") return 401;
   if (kind === "FORBIDDEN") return 403;
+  if (kind === "CONFLICT") return 409;
   return 500;
 };
 

@@ -1,6 +1,6 @@
 const express = require("express");
-const service = require("./users.service");
 const { control, getBody, guardUser } = require("../../middleware");
+const service = require("./users.service");
 
 /**
  * Defines the routes for the users endpoint.
