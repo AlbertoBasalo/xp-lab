@@ -1,0 +1,81 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "Users",
+    "dateExported": "2023-10-06T08:44:14.786Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "c0b9abfa-dd93-4b18-9c99-99e1a92c67dd",
+            "colId": "6c5392a8-eedf-439c-b3d0-44d0236ce3ff",
+            "containerId": "",
+            "name": "register",
+            "url": "http://localhost:3000/v1/users/",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2023-10-06T08:22:34.036Z",
+            "modified": "2023-10-06T08:27:15.209Z",
+            "headers": [
+                {
+                    "name": "x-API-key",
+                    "value": "{{API_KEY}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\": \"Alberto Basalo\",\n  \"email\": \"albertobasalo@hotmail.com\",\n  \"password\": \"1234\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "a38dc680-7dd9-4cab-87bb-c2842f95c53c",
+            "colId": "6c5392a8-eedf-439c-b3d0-44d0236ce3ff",
+            "containerId": "",
+            "name": "login",
+            "url": "http://localhost:3000/v1/users/login",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2023-10-06T08:41:35.572Z",
+            "modified": "2023-10-06T08:41:57.027Z",
+            "headers": [
+                {
+                    "name": "x-API-key",
+                    "value": "{{API_KEY}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\": \"albertobasalo@hotmail.com\",\n  \"password\": \"1234\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "282a0c3d-010b-468a-8a58-807a3d1fe926",
+            "colId": "6c5392a8-eedf-439c-b3d0-44d0236ce3ff",
+            "containerId": "",
+            "name": "login FORBIDDEN",
+            "url": "http://localhost:3000/v1/users/login",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2023-10-06T08:42:24.128Z",
+            "modified": "2023-10-06T08:43:10.039Z",
+            "headers": [
+                {
+                    "name": "x-API-key",
+                    "value": "{{API_KEY}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\": \"albertobasalo@gmail.com\",\n  \"password\": \"4321\"\n}",
+                "form": []
+            },
+            "tests": []
+        }
+    ]
+}

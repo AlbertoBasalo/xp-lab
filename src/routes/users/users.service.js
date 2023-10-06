@@ -1,4 +1,5 @@
-const { AppError, MemoryRepository, signUser } = require("../../shared");
+const { AppError, MemoryRepository } = require("../../shared");
+const { signUser } = require("../../middleware");
 const usersRepository = MemoryRepository([]);
 
 const readById = async (id, userId) => {
@@ -13,7 +14,7 @@ const readByEmail = async (email) => {
 };
 
 const register = async (user) => {
-  const current = await readByEmail(credentials.email);
+  const current = await readByEmail(user.email);
   if (current) throw new AppError("User already exist", "CONFLICT", "users.create");
   user.id = new Date().getTime();
   user.timestamp = new Date().toISOString();

@@ -6,7 +6,7 @@ function configure() {
   const logger = winston.createLogger({
     level: "info",
     format: combine(timestamp(), prettyPrint()),
-    transports: [new winston.transports.File({ filename: `./logs/${today}.log`, level: "error" })],
+    transports: [new winston.transports.File({ filename: `./logs/${today}.log`, level: "warn" })],
   });
   if (process.env.NODE_ENV !== "production") {
     logger.add(

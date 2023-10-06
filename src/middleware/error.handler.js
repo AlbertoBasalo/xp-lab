@@ -1,6 +1,6 @@
 let _logger;
 const getStatus = (err) => {
-  const kind = err.kind || "unhandled";
+  const { kind } = err;
   if (kind === "VALIDATION") return 400;
   if (kind === "NOT_FOUND") return 404;
   if (kind === "UNAUTHORIZED") return 401;
@@ -13,11 +13,12 @@ const ErrorHandler = (err, req, res, next) => {
   checkJwtErrors(err);
   const errInfo = {
     message: err.message || "Something went wrong",
-    kind: err.kind,
-    source: err.source,
+    kind: err.kind || "unhandled",
+    source: err.source || "unknown",
   };
-  _logger.error({ ...errInfo });
-  const errStatus = getStatus(err);
+  if (errInfo.kind === "unhandled") _logger.error({ ...errInfo });
+  else _logger.warn({ ...errInfo });
+  const errStatus = getStatus(errInfo);
   res.status(errStatus).json(errInfo);
 };
 

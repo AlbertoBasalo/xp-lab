@@ -1,0 +1,80 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "Activities",
+    "dateExported": "2023-10-06T08:45:06.671Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "2d9500ed-a3bc-4c36-b995-fae0ccb798d2",
+            "colId": "79dc27af-1864-418c-8f55-c8ab66f1d117",
+            "containerId": "",
+            "name": "http://localhost:3000/v1/activities/",
+            "url": "http://localhost:3000/v1/activities/",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2023-10-06T08:37:38.300Z",
+            "modified": "2023-10-06T08:37:38.300Z",
+            "headers": [
+                {
+                    "name": "x-API-key",
+                    "value": "{{API_KEY}}"
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "847e4713-5795-4d18-8174-6fbf01dc0a03",
+            "colId": "79dc27af-1864-418c-8f55-c8ab66f1d117",
+            "containerId": "",
+            "name": "http://localhost:3000/v1/activities/",
+            "url": "http://localhost:3000/v1/activities/",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2023-10-06T08:37:57.550Z",
+            "modified": "2023-10-06T08:39:41.608Z",
+            "headers": [
+                {
+                    "name": "x-API-key",
+                    "value": "{{API_KEY}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\": \"Sailing\",\n  \"description\": \"Go with the wind\",\n  \"price\": 200,\n  \"quorum\": 1,\n  \"capacity\": 4\n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE2OTY1ODEzMzQ1MjUsImlhdCI6MTY5NjU4MTMzNCwiZXhwIjoxNzI4MTM4OTM0fQ.TBwQ0PGJoGsbEA7pin4_QUvZezOnWxBq5yeMs53021k"
+            },
+            "tests": []
+        },
+        {
+            "_id": "51e85a36-8f28-41a4-9623-7e61a14a6c0f",
+            "colId": "79dc27af-1864-418c-8f55-c8ab66f1d117",
+            "containerId": "",
+            "name": "http://localhost:3000/v1/activities/ UNAUTHORITHED",
+            "url": "http://localhost:3000/v1/activities/",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2023-10-06T08:40:17.969Z",
+            "modified": "2023-10-06T08:40:35.177Z",
+            "headers": [
+                {
+                    "name": "x-API-key",
+                    "value": "{{API_KEY}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\": \"Sailing\",\n  \"description\": \"Go with the wind\",\n  \"price\": 200,\n  \"quorum\": 1,\n  \"capacity\": 4\n}",
+                "form": []
+            },
+            "tests": []
+        }
+    ]
+}
