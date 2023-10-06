@@ -1,13 +1,16 @@
-const activitiesRepository = require("./activities.memory.repository");
-const bookingsRepository = require("../bookings/bookings.memory.repository");
-const { AppError } = require("../../shared");
+const { AppError, MemoryRepository } = require("../../shared");
+const activities = require("../../db/activities.data.json");
+const bookings = require("../../db/bookings.data.json");
+
+const activitiesRepository = MemoryRepository(activities);
+const bookingsRepository = MemoryRepository(bookings);
 
 async function readAll() {
-  return await activitiesRepository.selectActivities();
+  return await activitiesRepository.selectAll();
 }
 
 async function readById(id) {
-  const activity = await activitiesRepository.selectActivity(id);
+  const activity = await activitiesRepository.selectById(id);
   if (!activity) {
     throw new AppError(`Activity with id: ${id} not found `, "NOT_FOUND", "readActivity");
   }
@@ -15,30 +18,30 @@ async function readById(id) {
 }
 
 async function readBookings(id) {
-  await readActivity(id);
-  return await bookingsRepository.selectBookingByActivityId(id);
+  await readById(id);
+  return await bookingsRepository.selectByKeyValue("activityId", id);
 }
 
 async function create(activity, userId) {
   activity.userId = userId;
   activity.id = new Date().getTime();
   activity.timestamp = new Date().toISOString();
-  return await activitiesRepository.insertActivity(activity);
+  return await activitiesRepository.insert(activity);
 }
 
 async function update(id, activity, userId) {
-  const current = await readActivity(id);
+  const current = await readById(id);
   validateUser(userId, current, "updateActivity");
   const updated = { ...current, ...activity, timestamp: new Date().toISOString() };
-  await activitiesRepository.updateActivity(id, updated);
+  await activitiesRepository.update(id, updated);
   return updated;
 }
 
-const remove = async (id, userId) => {
-  const current = await activitiesRepository.selectActivity(id);
+const deleteById = async (id, userId) => {
+  const current = await activitiesRepository.selectById(id);
   if (!current) return;
   validateUser(userId, current, "deleteActivity");
-  return await activitiesRepository.deleteActivity(id);
+  return await activitiesRepository.deleteById(id);
 };
 
 function validateUser(userId, current, source) {
@@ -57,7 +60,7 @@ const activitiesService = {
   readBookings,
   create,
   update,
-  delete: remove,
+  deleteById,
 };
 
 module.exports = activitiesService;

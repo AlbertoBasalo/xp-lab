@@ -16,6 +16,6 @@ router
   .get("/:id/bookings", getId, control(service.readBookings))
   .post("/", guardUser, getBody, control(service.create))
   .put("/:id", guardUser, getId, getBody, control(service.update))
-  .delete("/:id", guardUser, getId, control(service.delete));
+  .delete("/:id", guardUser, getId, control(service.deleteById));
 
 module.exports = router;

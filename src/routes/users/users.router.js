@@ -1,5 +1,5 @@
 const express = require("express");
-const service = {}; // ToDo: require("./users.service");
+const service = require("./users.service");
 const { control, getBody, guardUser } = require("../../middleware");
 
 /**
@@ -9,10 +9,9 @@ const { control, getBody, guardUser } = require("../../middleware");
 const router = express.Router();
 
 router
-  //.get("/", control(service.readAll))
   .get("/:id", guardUser, control(service.readById))
-  .post("/", getBody, control(service.create))
-  .put("/:id", guardUser, getBody, control(service.update))
-  .delete("/:id", guardUser, control(service.remove));
+  .post("/", getBody, control(service.register))
+  .post("/register", getBody, control(service.register))
+  .post("/login", getBody, control(service.login));
 
 module.exports = router;

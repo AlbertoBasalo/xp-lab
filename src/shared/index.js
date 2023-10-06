@@ -1,3 +1,3 @@
 const AppError = require("./app-error.class");
-
-module.exports = { AppError };
+const MemoryRepository = require("./memory.repository");
+module.exports = { AppError, MemoryRepository };
