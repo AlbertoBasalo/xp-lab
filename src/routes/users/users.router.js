@@ -4,6 +4,8 @@ const { control, getBody, guardUser } = require("../../middleware");
 
 /**
  * Defines the routes for the users endpoint.
+ * Guards some routes requiring a user to be logged in.
+ * Adds a middleware to extract args from the request.
  * Wires each route with its service function.
  */
 const router = express.Router();

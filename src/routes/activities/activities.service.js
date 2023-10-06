@@ -17,22 +17,23 @@ async function readById(id) {
   return activity;
 }
 
-async function readBookings(id) {
-  await readById(id);
+async function readBookings(id, userId) {
+  const current = await readById(id);
+  validateUser(userId, current, "readBookings");
   return await bookingsRepository.selectByKeyValue("activityId", id);
 }
 
 async function create(activity, userId) {
   activity.userId = userId;
   activity.id = new Date().getTime();
-  activity.timestamp = new Date().toISOString();
+  activity.createdAt = new Date().toISOString();
   return await activitiesRepository.insert(activity);
 }
 
 async function update(id, activity, userId) {
   const current = await readById(id);
   validateUser(userId, current, "updateActivity");
-  const updated = { ...current, ...activity, timestamp: new Date().toISOString() };
+  const updated = { ...current, ...activity, updatedAt: new Date().toISOString() };
   await activitiesRepository.update(id, updated);
   return updated;
 }

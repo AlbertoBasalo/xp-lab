@@ -1,22 +1,19 @@
 const express = require("express");
 
+/**
+ * Defines the routes for the bookings endpoint.
+ * Guards some routes requiring a user to be logged in.
+ * Adds a middleware to extract args from the request.
+ * Wires each route with its service function.
+ */
 const router = express.Router();
 
 router
-  .get("/", (req, res) => {
-    res.send("All Bookings");
-  })
-  .get("/:id", (req, res) => {
-    res.send(`Booking with id ${req.params.id}`);
-  })
-  .post("/", (req, res) => {
-    res.send("Create new Booking");
-  })
-  .put("/:id", (req, res) => {
-    res.send(`Update Booking with Id ${req.params.id}`);
-  })
-  .delete("/:id", (req, res) => {
-    res.send(`Delete Booking with Id ${req.params.id}`);
-  });
+  .get("/", guardUser, control(service.readAll))
+  .get("/:id", guardUser, getId, control(service.readById))
+  .get("/:id/activity", guardUser, getId, control(service.readActivity))
+  .post("/", guardUser, getBody, control(service.create))
+  .put("/:id", guardUser, getId, getBody, control(service.update))
+  .delete("/:id", guardUser, getId, control(service.deleteById));
 
 module.exports = router;

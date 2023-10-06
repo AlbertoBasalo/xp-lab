@@ -4,7 +4,7 @@ const { useSecurity, guardUser, getUser, signUser } = require("./security");
 const { control, getId, getBody } = require("./controller");
 
 /**
- * Middleware functions and configuration for security, logging, and error handling
+ * Middleware express functions and configuration for security, logging, and error handling
  */
 const middleware = { control, getId, getBody, handleErrors, logger, useSecurity, guardUser, getUser, signUser };
 

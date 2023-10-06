@@ -17,7 +17,7 @@ const register = async (user) => {
   const current = await readByEmail(user.email);
   if (current) throw new AppError("User already exist", "CONFLICT", "users.create");
   user.id = new Date().getTime();
-  user.timestamp = new Date().toISOString();
+  user.createdAt = new Date().toISOString();
   const inserted = await usersRepository.insert(user);
   if (!inserted) throw new AppError("User could not be registered", "DATA", "users.create");
   return signUser(user.id);
