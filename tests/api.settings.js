@@ -3,7 +3,6 @@ const ACTIVITIES_URL = `${API_URL}/activities`;
 const BOOKINGS_URL = `${API_URL}/bookings`;
 const USERS_URL = `${API_URL}/users`;
 const REGISTER_URL = `${USERS_URL}/register`;
-const UNREGISTER_URL = `${USERS_URL}/unregister`;
 const LOGIN_URL = `${USERS_URL}/login`;
 const OPTIONS_BASE = {
   headers: {
@@ -18,7 +17,6 @@ const urlConfigs = {
   USERS_URL,
   REGISTER_URL,
   LOGIN_URL,
-  UNREGISTER_URL,
   OPTIONS_BASE,
 };
 

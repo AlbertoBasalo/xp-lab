@@ -1,6 +1,6 @@
 const axios = require("axios");
 const { USERS, ACTIVITIES } = require("./input.data");
-const { REGISTER_URL, USERS_URL, ACTIVITIES_URL, OPTIONS_BASE, LOGIN_URL, BOOKINGS_URL } = require("./url.settings");
+const { REGISTER_URL, USERS_URL, ACTIVITIES_URL, OPTIONS_BASE, LOGIN_URL, BOOKINGS_URL } = require("./api.settings");
 
 const organizeUserActivities = async (organizer, activities) => {
   const userToken = await getUserToken(organizer);
@@ -68,18 +68,15 @@ async function getUserToken(user) {
   }
 }
 async function organizeActivities(activities, userOptions) {
-  const results = await Promise.all(activities.map((activity) => postActivity(activity, userOptions)));
-  const retrieved = await getMyActivities(userOptions);
-  const retrievedData = retrieved.data;
-  console.log("User data retrieved", retrievedData);
-  return retrievedData;
+  await Promise.all(activities.map((activity) => postActivity(activity, userOptions)));
+  const retrieved = (await getMyActivities(userOptions)).data;
+  console.log("User data retrieved", retrieved);
+  return retrieved;
 }
 async function clearUserJourney(activitiesResult, userOptions, userToken, user) {
   await Promise.all(activitiesResult.map((activity) => deleteActivity(activity.id, userOptions)));
-  const clear = await getActivities();
-  console.log("User data cleared", clear.data.length);
   await unregister(userToken.id, userOptions);
-  console.log("User unregistered", user);
+  console.log("User journey cleared", user);
 }
 
 const register = async (user) => await axios.post(REGISTER_URL, user, OPTIONS_BASE);
