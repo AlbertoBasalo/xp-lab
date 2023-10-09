@@ -17,7 +17,7 @@ const ErrorHandler = (err, req, res, next) => {
     kind: err.kind || "unhandled",
     source: err.source || "unknown",
   };
-  if (errInfo.kind === "unhandled") _logger.error({ ...errInfo });
+  if (errInfo.kind === "unhandled") _logger.error({ ...errInfo, stack: err.stack });
   else _logger.warn({ ...errInfo });
   const errStatus = getStatus(errInfo);
   res.status(errStatus).json(errInfo);

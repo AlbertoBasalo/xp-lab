@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node src/app.js",
     "test": "node tests/index.js",
-    "dev": "nodemon src/app.js"
+    "dev": "nodemon --watch src src/app.js",
+    "dev:test": "nodemon --watch tests tests/index.js"
   },
   "keywords": [
     "demo",
@@ -23,6 +24,7 @@
     "express": "^4.18.2",
     "express-jwt": "^8.4.1",
     "helmet": "^7.0.0",
+    "morgan": "^1.10.0",
     "winston": "^3.10.0"
   },
   "devDependencies": {

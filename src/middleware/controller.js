@@ -53,16 +53,16 @@ const control = (serviceFn) => {
 };
 
 const call = async (req, serviceFn) => {
+  setUserId(req);
   const args = req.args;
-  setUserId(req, args);
   if (!args) return await serviceFn();
   return await serviceFn(...args);
 };
 
-const setUserId = (req, args) => {
+const setUserId = (req) => {
   if (req.auth && req.auth.sub) {
-    if (!args) req.args = [];
-    args.push(+req.auth.sub);
+    if (!req.args) req.args = [];
+    req.args.push(+req.auth.sub);
   }
 };
 

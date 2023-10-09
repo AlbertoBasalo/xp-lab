@@ -12,6 +12,7 @@ const router = express.Router();
 
 router
   .get("/", control(service.readAll))
+  .get("/mines", guardUser, control(service.readByUser))
   .get("/:id", getId, control(service.readById))
   .get("/:id/bookings", guardUser, getId, control(service.readBookings))
   .post("/", guardUser, getBody, control(service.create))

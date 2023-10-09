@@ -6,6 +6,7 @@ const middleware = require("./middleware");
 const { parsed: env } = dotenv.config();
 const app = express();
 
+middleware.useLoggers(app);
 middleware.useSecurity(app);
 routes.configure(app, express, env.API_VERSION);
 middleware.handleErrors(app, middleware.logger);

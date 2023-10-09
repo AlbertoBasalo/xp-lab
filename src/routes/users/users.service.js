@@ -20,13 +20,30 @@ const register = async (user) => {
   user.createdAt = new Date().toISOString();
   const inserted = await usersRepository.insert(user);
   if (!inserted) throw new AppError("User could not be registered", "DATA", "users.create");
-  return signUser(user.id);
+  const userToken = {
+    accessToken: signUser(user.id),
+    id: user.id,
+  };
+  return userToken;
 };
 
 const login = async (credentials) => {
   const user = await readByEmail(credentials.email);
-  if (user && user.password === credentials.password) return signUser(user.id);
+  if (user && user.password === credentials.password) {
+    const userToken = {
+      accessToken: signUser(user.id),
+      id: user.id,
+    };
+    return userToken;
+  }
   throw new AppError("Invalid credentials", "FORBIDDEN", "users.validateCredentials");
+};
+
+const deleteById = async (id, userId) => {
+  const current = await usersRepository.selectById(id);
+  if (!current) return;
+  guardIsOwner(userId, current, "users.readById");
+  return await usersRepository.deleteById(id);
 };
 
 const guardIsOwner = (userId, item, source) => {
@@ -43,6 +60,7 @@ const usersService = {
   readById,
   register,
   login,
+  deleteById,
 };
 
 module.exports = usersService;

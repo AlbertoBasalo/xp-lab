@@ -1,83 +1,118 @@
 const axios = require("axios");
-const API_URL = "http://localhost:3000/v1";
-const ACTIVITIES_URL = `${API_URL}/activities`;
-const USERS_URL = `${API_URL}/users`;
-const LOGIN_URL = `${USERS_URL}/login`;
-const REGISTER_URL = `${USERS_URL}/register`;
+const { USERS, ACTIVITIES } = require("./input.data");
+const { REGISTER_URL, USERS_URL, ACTIVITIES_URL, OPTIONS_BASE, LOGIN_URL, BOOKINGS_URL } = require("./url.settings");
 
-const OPTIONS_BASE = {
-  headers: {
-    "x-api-key": "xp-client",
-  },
+const organizeUserActivities = async (organizer, activities) => {
+  const userToken = await getUserToken(organizer);
+  const userOptions = makeUserOptions(userToken.accessToken);
+  const postedResult = await organizeActivities(activities, userOptions);
+  await clearUserJourney(postedResult, userOptions, userToken, organizer);
+  return true;
 };
 
-const USERS = [
-  {
-    name: "Alice Wonderland",
-    email: "alice@wonderland.com",
-    passwordB: "12345678",
-  },
-];
-const ACTIVITIES = [
-  {
-    name: "Snorkeling",
-    description: "Swim with the fishes",
-    price: 100,
-    quorum: 1,
-    capacity: 20,
-  },
-  {
-    name: "Stand-up Paddleboard",
-    description: "Stand on a board and paddle",
-    price: 200,
-    quorum: 2,
-    capacity: 10,
-  },
-  {
-    name: "Diving'",
-    description: "Dive deep into the ocean",
-    price: 300,
-    quorum: 3,
-    capacity: 6,
-  },
-];
-const tokens = [];
+const organizeAndBookActivity = async (organizer, participant, activity) => {
+  const { activityResult, organizerOptions, organizerToken } = await organizeActivity(organizer, activity);
+  const { bookingResult, participantOptions, participantToken } = await bookActivity(participant, activity);
+  await clearOrganizeAndBook(
+    activityResult,
+    organizerOptions,
+    organizerToken,
+    bookingResult,
+    participantOptions,
+    participantToken
+  );
+};
+
+async function clearOrganizeAndBook(
+  activityResult,
+  organizerOptions,
+  organizerToken,
+  bookingResult,
+  participantOptions,
+  participantToken
+) {
+  await deleteActivity(activityResult.data.id, organizerOptions);
+  await unregister(organizerToken.id, organizerOptions);
+  await deleteBooking(bookingResult.data.id, participantOptions);
+  await unregister(participantToken.id, participantOptions);
+}
+
+async function bookActivity(participant, activity) {
+  const participantToken = await getUserToken(participant);
+  const participantOptions = makeUserOptions(participantToken.accessToken);
+  const booking = { activityId: activity.id, participants: 2, status: "confirmed" };
+  const bookingResult = await postBooking(booking, participantOptions);
+  const retrieved = await getMyBookings(participantOptions);
+  const retrievedData = retrieved.data;
+  console.log("Booking retrieved", retrievedData);
+  return { bookingResult, participantOptions, participantToken };
+}
+
+async function organizeActivity(organizer, activity) {
+  const organizerToken = await getUserToken(organizer);
+  const organizerOptions = makeUserOptions(organizerToken.accessToken);
+  const activityResult = await postActivity(activity, organizerOptions);
+  console.log("Activity created", activityResult.data);
+  return { activityResult, organizerOptions, organizerToken };
+}
+
+async function getUserToken(user) {
+  try {
+    const response = await register(user);
+    console.log("User registered", response.data);
+    return response.data;
+  } catch (err) {
+    const response = await login(user);
+    console.log("User logged", response.data);
+    return response.data;
+  }
+}
+async function organizeActivities(activities, userOptions) {
+  const results = await Promise.all(activities.map((activity) => postActivity(activity, userOptions)));
+  const retrieved = await getMyActivities(userOptions);
+  const retrievedData = retrieved.data;
+  console.log("User data retrieved", retrievedData);
+  return retrievedData;
+}
+async function clearUserJourney(activitiesResult, userOptions, userToken, user) {
+  await Promise.all(activitiesResult.map((activity) => deleteActivity(activity.id, userOptions)));
+  const clear = await getActivities();
+  console.log("User data cleared", clear.data.length);
+  await unregister(userToken.id, userOptions);
+  console.log("User unregistered", user);
+}
 
 const register = async (user) => await axios.post(REGISTER_URL, user, OPTIONS_BASE);
+const unregister = async (userId, options) => await axios.delete(`${USERS_URL}/${userId}`, options);
+const login = async (user) => await axios.post(LOGIN_URL, user, OPTIONS_BASE);
 const postActivity = async (activity, options) => await axios.post(ACTIVITIES_URL, activity, options);
+const deleteActivity = async (activityId, options) => await axios.delete(`${ACTIVITIES_URL}/${activityId}`, options);
 const getActivities = async () => await axios.get(ACTIVITIES_URL, OPTIONS_BASE);
+const getMyActivities = async (options) => await axios.get(`${ACTIVITIES_URL}/mines`, options);
+const postBooking = async (booking, options) => await axios.post(BOOKINGS_URL, booking, options);
+const deleteBooking = async (bookingId, options) => await axios.delete(`${BOOKINGS_URL}/${bookingId}`, options);
+const getMyBookings = async (options) => await axios.get(`${BOOKINGS_URL}`, options);
 
+const makeUserOptions = (token) => ({ headers: { ...OPTIONS_BASE.headers, Authorization: `Bearer ${token}` } });
+const expectedError = (err) => console.log(`Expected Error: ${err.response.status}, ${err.response.data.message}`);
+const expectedResult = (res) => console.log(`Expected Result: ${res.status}, ${res.data.length || 1} items`);
+const logError = (err) => console.log(`UN - Expected Error: ${err.message}`, err.request.path);
+
+/**
+ * Main testing flows
+ */
 main = async () => {
-  await firstUserHappyJourney();
-  await firstUserRiskyJourney();
-  await secondUserHappyJourney();
+  const alice = USERS[0];
+  const aliceActivities = ACTIVITIES[0];
+  const bob = USERS[1];
+  const bobActivities = ACTIVITIES[1];
+  try {
+    await organizeUserActivities(alice, aliceActivities);
+    await organizeUserActivities(bob, bobActivities);
+    await organizeAndBookActivity(alice, bob, aliceActivities[0]);
+  } catch (err) {
+    console.error(err.message, { path: err.request?.path, response: err.response?.data });
+  }
 };
+/** Start tests */
 main();
-
-async function firstUserHappyJourney() {
-  tokens.push((await register(USERS[0])).data);
-  await postActivity(ACTIVITIES[0], makeUserOptions(0)).then(logResult);
-  await postActivity(ACTIVITIES[1], makeUserOptions(0)).then(logResult);
-  await getActivities().then(logResult);
-}
-
-async function firstUserRiskyJourney() {
-  await register(USERS[0]).catch(logError);
-}
-
-async function secondUserHappyJourney() {
-  tokens.push((await register(USERS[1])).data);
-  await postActivity(ACTIVITIES[2], makeUserOptions(0)).then(logResult);
-  await getActivities().then(logResult);
-}
-
-function makeUserOptions(id) {
-  return { headers: { ...OPTIONS_BASE.headers, Authorization: `Bearer ${tokens[id]}` } };
-}
-function logError(err) {
-  console.log(`Expected Error: ${err.response.status}, ${err.response.data.message}`);
-}
-function logResult(res) {
-  const dataLength = res.data.length || 1;
-  console.log(`Expected Result: ${res.status}, ${dataLength} items`);
-}
