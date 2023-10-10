@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      console.log("associate activity");
       Activity.belongsTo(models.User, { foreignKey: "userId" });
     }
   }
@@ -19,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       price: DataTypes.FLOAT,
       quorum: DataTypes.INTEGER,
       capacity: DataTypes.INTEGER,
+      userId: DataTypes.INTEGER,
     },
     {
       sequelize,

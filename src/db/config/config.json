@@ -1,0 +1,14 @@
+{
+  "development": {
+    "url": "postgres://qaincjhh:3CaWRgSiZkA-QVbnHuZa0tSuMFkQ2lOQ@flora.db.elephantsql.com/qaincjhh",
+    "dialect": "postgres"
+  },
+  "test": {
+    "url": "postgres://qaincjhh:3CaWRgSiZkA-QVbnHuZa0tSuMFkQ2lOQ@flora.db.elephantsql.com/qaincjhh",
+    "dialect": "postgres"
+  },
+  "production": {
+    "url": "postgres://qaincjhh:3CaWRgSiZkA-QVbnHuZa0tSuMFkQ2lOQ@flora.db.elephantsql.com/qaincjhh",
+    "dialect": "postgres"
+  }
+}
