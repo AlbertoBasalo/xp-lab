@@ -1,14 +1,14 @@
 {
   "development": {
-    "url": "postgres://qaincjhh:3CaWRgSiZkA-QVbnHuZa0tSuMFkQ2lOQ@flora.db.elephantsql.com/qaincjhh",
+    "url": "postgres://deleted",
     "dialect": "postgres"
   },
   "test": {
-    "url": "postgres://qaincjhh:3CaWRgSiZkA-QVbnHuZa0tSuMFkQ2lOQ@flora.db.elephantsql.com/qaincjhh",
+    "url": "postgres://deleted",
     "dialect": "postgres"
   },
   "production": {
-    "url": "postgres://qaincjhh:3CaWRgSiZkA-QVbnHuZa0tSuMFkQ2lOQ@flora.db.elephantsql.com/qaincjhh",
+    "url": "postgres://deleted",
     "dialect": "postgres"
   }
 }
