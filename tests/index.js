@@ -18,7 +18,7 @@ const organizeUserActivities = async (organizer, activities) => {
 
 const organizeAndBookActivity = async (organizer, participant, activity) => {
   const { activityResult, organizerOptions, organizerToken } = await organizeActivity(organizer, activity);
-  const { bookingResult, participantOptions, participantToken } = await bookActivity(participant, activity);
+  const { bookingResult, participantOptions, participantToken } = await bookActivity(participant, activityResult.data);
   await clearOrganizeAndBook(
     activityResult,
     organizerOptions,
@@ -47,6 +47,7 @@ async function bookActivity(participant, activity) {
   const participantToken = await getUserToken(participant);
   const participantOptions = makeUserOptions(participantToken.accessToken);
   const booking = { activityId: activity.id, participants: 2, status: "confirmed" };
+  console.log("Booking to create", booking);
   const bookingResult = await postBooking(booking, participantOptions);
   const retrieved = await getMyBookings(participantOptions);
   const retrievedData = retrieved.data;
@@ -110,11 +111,11 @@ main = async () => {
   const bob = USERS[1];
   const bobActivities = ACTIVITIES[1];
   try {
-    // await registerUser(alice);
-    // await registerUser(bob);
+    await registerUser(alice);
+    await registerUser(bob);
     await organizeUserActivities(alice, aliceActivities);
-    // await organizeUserActivities(bob, bobActivities);
-    // await organizeAndBookActivity(alice, bob, aliceActivities[0]);
+    await organizeUserActivities(bob, bobActivities);
+    await organizeAndBookActivity(alice, bob, aliceActivities[0]);
   } catch (err) {
     console.error(err.message, { path: err.request?.path, response: err.response?.data });
   }

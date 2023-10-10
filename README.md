@@ -22,4 +22,6 @@ npx sequelize-cli db:migrate
 npx sequelize-cli model:generate --name Activity --attributes name:string,description:string,price:float,quorum:integer
 ,capacity:integer
 npx sequelize-cli db:migrate
+npx sequelize-cli model:generate --name Booking --attributes activityId:integer,userId:integer,participants:integer,status:string
+,capacity:integer
 ```

@@ -1,21 +1,19 @@
-const { AppError, MemoryRepository } = require("../../shared");
-const activities = require("../../db/activities.data.json");
-const bookings = require("../../db/bookings.data.json");
+const { AppError, db } = require("../../shared");
 
-const activitiesRepository = MemoryRepository(activities);
-const bookingsRepository = MemoryRepository(bookings);
+const activitiesRepository = db.activities;
+const bookingsRepository = db.bookings;
 
 async function readAll(userId) {
-  return await bookingsRepository.selectByKeyValue("userId", userId);
+  return await bookingsRepository.selectByUserId(userId);
 }
 
 async function readById(id, userId) {
   const booking = await bookingsRepository.selectById(id);
   if (!booking) {
-    throw new AppError(`Booking with id: ${id} not found `, "NOT_FOUND", "readBooking");
+    throw new AppError(`Booking ${id} not found `, "NOT_FOUND", "readBooking");
   }
   if (userId !== booking.userId) {
-    throw new AppError("User is not the owner of the booking", "FORBIDDEN", "readBooking");
+    throw new AppError(`User ${userId} is not the owner of the booking ${id}`, "FORBIDDEN", "readBooking");
   }
   return booking;
 }
@@ -27,16 +25,16 @@ async function readActivity(id, userId) {
 
 create = async (booking, userId) => {
   const activity = activitiesRepository.selectById(booking.activityId);
-  if (!activity) throw new AppError("Activity not found", "NOT_FOUND", "createBooking");
+  if (!activity) throw new AppError(`Activity ${booking.activityId} not found`, "NOT_FOUND", "createBooking");
   booking.userId = userId;
-  booking.id = new Date().getTime();
-  booking.createdAt = new Date().toISOString();
+  // booking.activityId = activity.id;
+  console.log(booking);
   return await bookingsRepository.insert(booking);
 };
 
 async function update(id, booking, userId) {
   const current = await readById(id, userId);
-  const updated = { ...current, ...booking, updatedAt: new Date().toISOString() };
+  const updated = { ...current, ...booking };
   await bookingsRepository.update(id, updated);
   return updated;
 }
@@ -45,7 +43,7 @@ const deleteById = async (id, userId) => {
   const current = await bookingsRepository.selectById(id);
   if (!current) return;
   if (userId !== current.userId) {
-    throw new AppError("User is not the owner of the booking", "FORBIDDEN", "deleteBooking");
+    throw new AppError(`User ${userId} is not the owner of the Booking ${id}`, "FORBIDDEN", "deleteBooking");
   }
   return await bookingsRepository.deleteById(id);
 };
