@@ -10,6 +10,8 @@ npm i express
 npm i -D nodemon
 ```
 
+`.sequelizerc`
+
 ```bash
 npm i pg pg-hstore sequelize
 npm i -D sequelize-cli

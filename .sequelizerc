@@ -1,0 +1,8 @@
+const path = require("path");
+
+module.exports = {
+  url: "postgres://xxlmmwbo:5YGwRwcBxDdQ30s7IDq8Kc0BtX8xhUHv@flora.db.elephantsql.com/xxlmmwbo",
+  "models-path": path.resolve("src", "db", "models"),
+  "seeders-path": path.resolve("src", "db", "seeders"),
+  "migrations-path": path.resolve("src", "db", "migrations"),
+};
