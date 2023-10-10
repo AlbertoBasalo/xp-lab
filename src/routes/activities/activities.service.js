@@ -1,8 +1,8 @@
-const { AppError, MemoryRepository } = require("../../shared");
+const { AppError, MemoryRepository, db } = require("../../shared");
 // const activities = require("../../db/activities.data.json");
 const bookings = require("../../db/bookings.data.json");
 
-const activitiesRepository = MemoryRepository([]);
+const activitiesRepository = db.activities;
 const bookingsRepository = MemoryRepository(bookings);
 
 async function readAll() {
@@ -28,8 +28,6 @@ async function readBookings(id, userId) {
 
 async function create(activity, userId) {
   activity.userId = userId;
-  activity.id = new Date().getTime();
-  activity.createdAt = new Date().toISOString();
   return await activitiesRepository.insert(activity);
 }
 
@@ -50,7 +48,7 @@ const deleteById = async (id, userId) => {
 
 function validateUser(userId, current, source) {
   if (userId !== current.userId) {
-    throw new AppError("User is not the owner of the activity", "FORBIDDEN", source);
+    throw new AppError(`User ${userId} is not the owner of Activity ${current.id}`, "FORBIDDEN", source);
   }
 }
 

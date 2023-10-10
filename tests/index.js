@@ -9,6 +9,7 @@ const registerUser = async (user) => {
 };
 
 const organizeUserActivities = async (organizer, activities) => {
+  const userToken = await getUserToken(organizer);
   const userOptions = makeUserOptions(userToken.accessToken);
   const postedResult = await organizeActivities(activities, userOptions);
   await clearUserJourney(postedResult, userOptions, userToken, organizer);
@@ -109,9 +110,9 @@ main = async () => {
   const bob = USERS[1];
   const bobActivities = ACTIVITIES[1];
   try {
-    await registerUser(alice);
-    await registerUser(bob);
-    // await organizeUserActivities(alice, aliceActivities);
+    // await registerUser(alice);
+    // await registerUser(bob);
+    await organizeUserActivities(alice, aliceActivities);
     // await organizeUserActivities(bob, bobActivities);
     // await organizeAndBookActivity(alice, bob, aliceActivities[0]);
   } catch (err) {

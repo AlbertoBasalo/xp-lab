@@ -18,4 +18,7 @@ npm i -D sequelize-cli
 npx sequelize-cli init
 npx sequelize-cli model:generate --name User --attributes name:string,email:string,password:string
 npx sequelize-cli db:migrate
+npx sequelize-cli model:generate --name Activity --attributes name:string,description:string,price:decimal,quorum:integer
+,capacity:integer
+npx sequelize-cli db:migrate
 ```
