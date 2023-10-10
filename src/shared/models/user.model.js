@@ -1,37 +1,9 @@
 const defineUserModel = (sequelize, DataTypes) => {
-  const User = sequelize.define(
-    "user",
-    {
-      id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-        allowNull: false,
-      },
-      name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      email: {
-        type: DataTypes.STRING,
-        unique: true,
-        isEmail: true,
-        allowNull: false,
-      },
-      password: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-    },
-    { timestamps: true }
-  );
-  User.readByEmail = async (email) => {
-    const user = await User.findOne({ where: { email } });
-    return user;
-  };
-  User.insert = async (user) => {
-    return await User.create(user);
-  };
+  const User = require("../../../models/user")(sequelize, DataTypes);
+  User.selectByEmail = async (email) => await User.findOne({ where: { email } });
+  User.selectById = async (id) => await User.findByPk(id);
+  User.insert = async (user) => await User.create(user);
+  User.deleteById = async (id) => await User.destroy({ where: { id } });
   return User;
 };
 

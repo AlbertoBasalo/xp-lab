@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "xxlmmwbo",
+    "password": "5YGwRwcBxDdQ30s7IDq8Kc0BtX8xhUHv",
+    "database": "xxlmmwbo",
+    "host": "flora.db.elephantsql.com",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "xxlmmwbo",
+    "password": "5YGwRwcBxDdQ30s7IDq8Kc0BtX8xhUHv",
+    "database": "xxlmmwbo",
+    "host": "flora.db.elephantsql.com",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "xxlmmwbo",
+    "password": "5YGwRwcBxDdQ30s7IDq8Kc0BtX8xhUHv",
+    "database": "xxlmmwbo",
+    "host": "flora.db.elephantsql.com",
+    "dialect": "postgres"
+  }
+}

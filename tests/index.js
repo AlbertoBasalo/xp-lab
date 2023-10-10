@@ -4,7 +4,6 @@ const { REGISTER_URL, USERS_URL, ACTIVITIES_URL, OPTIONS_BASE, LOGIN_URL, BOOKIN
 
 const registerUser = async (user) => {
   const userToken = await getUserToken(user);
-  console.log("User registered", userToken);
   const userOptions = makeUserOptions(userToken.accessToken);
   await unregister(userToken.id, userOptions);
 };
@@ -65,11 +64,11 @@ async function organizeActivity(organizer, activity) {
 async function getUserToken(user) {
   try {
     const response = await register(user);
-    console.log("User registered", response.data);
+    console.log(`User ${user.email} registered`, response.data);
     return response.data;
   } catch (err) {
     const response = await login(user);
-    console.log("User logged", response.data);
+    console.log(`User ${user.email} logged in`, response.data);
     return response.data;
   }
 }
