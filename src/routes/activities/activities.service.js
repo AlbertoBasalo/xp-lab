@@ -17,7 +17,7 @@ async function readById(id) {
   return activity;
 }
 async function readByUser(userId) {
-  return await activitiesRepository.selectByKeyValue("userId", userId);
+  return await activitiesRepository.selectByUserId(userId);
 }
 
 async function readBookings(id, userId) {

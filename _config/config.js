@@ -1,6 +1,6 @@
 module.exports = {
   development: {
-    url: "postgres://xxlmmwbo:5YGwRwcBxDdQ30s7IDq8Kc0BtX8xhUHv@flora.db.elephantsql.com/xxlmmwbo",
+    url: "postgres://qaincjhh:3CaWRgSiZkA-QVbnHuZa0tSuMFkQ2lOQ@flora.db.elephantsql.com/qaincjhh",
     dialect: "postgres",
   },
   production: {
