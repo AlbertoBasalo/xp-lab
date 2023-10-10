@@ -1,4 +1,4 @@
-const defineUserModel = (sequelize, DataTypes) => {
+const defineUserRepository = (sequelize, DataTypes) => {
   const User = require("../../db/models/user")(sequelize, DataTypes);
   User.selectByEmail = async (email) => await User.findOne({ where: { email } });
   User.selectById = async (id) => await User.findByPk(id);
@@ -7,5 +7,5 @@ const defineUserModel = (sequelize, DataTypes) => {
   return User;
 };
 
-const userModel = { defineUserModel };
+const userModel = { defineUserRepository };
 module.exports = userModel;

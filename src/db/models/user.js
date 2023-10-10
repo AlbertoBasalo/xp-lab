@@ -9,7 +9,6 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      console.log("associate user");
       User.hasMany(models.Activity, { foreignKey: "userId", onDelete: "CASCADE" });
     }
   }
