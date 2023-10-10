@@ -1,7 +1,7 @@
-const { AppError, MemoryRepository } = require("../../shared");
+const { AppError, MemoryRepository, db } = require("../../shared");
 const { signUser } = require("../../middleware");
-const usersRepository = MemoryRepository([]);
-
+// const usersRepository = MemoryRepository([]);
+const usersRepository = db.users;
 const readById = async (id, userId) => {
   const current = await usersRepository.selectById(id);
   if (!current) throw new AppError(`User with id: ${id} not found `, "NOT_FOUND", "users.readById");
@@ -9,14 +9,15 @@ const readById = async (id, userId) => {
 };
 
 const readByEmail = async (email) => {
-  const users = await usersRepository.selectByKeyValue("email", email);
-  return users[0] || undefined;
+  // const users = await usersRepository.selectByKeyValue("email", email);
+  // return users[0] || undefined;
+  return await usersRepository.readByEmail(email);
 };
 
 const register = async (user) => {
   const current = await readByEmail(user.email);
   if (current) throw new AppError("User already exist", "CONFLICT", "users.create");
-  user.id = new Date().getTime();
+  // user.id = new Date().getTime();
   user.createdAt = new Date().toISOString();
   const inserted = await usersRepository.insert(user);
   if (!inserted) throw new AppError("User could not be registered", "DATA", "users.create");

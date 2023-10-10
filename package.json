@@ -14,6 +14,7 @@
     "course",
     "node",
     "express",
+    "sequelize",
     "postgres"
   ],
   "author": "Alberto Basalo",
@@ -25,6 +26,9 @@
     "express-jwt": "^8.4.1",
     "helmet": "^7.0.0",
     "morgan": "^1.10.0",
+    "pg": "^8.11.3",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.33.0",
     "winston": "^3.10.0"
   },
   "devDependencies": {

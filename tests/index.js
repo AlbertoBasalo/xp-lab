@@ -2,8 +2,14 @@ const axios = require("axios");
 const { USERS, ACTIVITIES } = require("./input.data");
 const { REGISTER_URL, USERS_URL, ACTIVITIES_URL, OPTIONS_BASE, LOGIN_URL, BOOKINGS_URL } = require("./api.settings");
 
+const registerUser = async (user) => {
+  const userToken = await getUserToken(user);
+  console.log("User registered", userToken);
+  const userOptions = makeUserOptions(userToken.accessToken);
+  await unregister(userToken.id, userOptions);
+};
+
 const organizeUserActivities = async (organizer, activities) => {
-  const userToken = await getUserToken(organizer);
   const userOptions = makeUserOptions(userToken.accessToken);
   const postedResult = await organizeActivities(activities, userOptions);
   await clearUserJourney(postedResult, userOptions, userToken, organizer);
@@ -104,9 +110,11 @@ main = async () => {
   const bob = USERS[1];
   const bobActivities = ACTIVITIES[1];
   try {
-    await organizeUserActivities(alice, aliceActivities);
-    await organizeUserActivities(bob, bobActivities);
-    await organizeAndBookActivity(alice, bob, aliceActivities[0]);
+    await registerUser(alice);
+    await registerUser(bob);
+    // await organizeUserActivities(alice, aliceActivities);
+    // await organizeUserActivities(bob, bobActivities);
+    // await organizeAndBookActivity(alice, bob, aliceActivities[0]);
   } catch (err) {
     console.error(err.message, { path: err.request?.path, response: err.response?.data });
   }
