@@ -1,6 +1,6 @@
 {
   "development": {
-    "url": "postgres://deleted",
+    "url": "",
     "dialect": "postgres"
   },
   "test": {
