@@ -1,4 +1,4 @@
-const { handleErrors } = require("./error.handler");
+const { useErrorHandler } = require("./error.handler");
 const { logger, useLoggers } = require("./logger");
 const { useSecurity, guardUser, getUser, signUser } = require("./security");
 const { control, getId, getBody } = require("./controller");
@@ -10,7 +10,7 @@ const middleware = {
   control,
   getId,
   getBody,
-  handleErrors,
+  useErrorHandler,
   logger,
   useLoggers,
   useSecurity,

@@ -44,30 +44,32 @@ const getBody = (req, res, next) => {
 const control = (serviceFn) => {
   return async (req, res, next) => {
     try {
-      const body = await call(req, serviceFn);
-      res.status(getOk(req)).json(body);
+      fillArgsWithUserId(req);
+      const body = await call(req.args, serviceFn);
+      const status = getStatusByMethod(req.method);
+      res.status(status).json(body);
     } catch (error) {
       next(error);
     }
   };
 };
 
-const call = async (req, serviceFn) => {
-  setUserId(req);
-  const args = req.args;
-  if (!args) return await serviceFn();
-  return await serviceFn(...args);
-};
-
-const setUserId = (req) => {
-  if (req.auth && req.auth.sub) {
-    if (!req.args) req.args = [];
-    req.args.push(+req.auth.sub);
+const call = async (args, serviceFn) => {
+  if (args) {
+    return await serviceFn(...args);
+  } else {
+    return await serviceFn();
   }
 };
 
-const getOk = (req) => {
-  const method = req.method;
+const fillArgsWithUserId = (req) => {
+  const userId = req.auth?.sub;
+  if (!userId) return;
+  if (!req.args) req.args = [];
+  req.args.push(+userId);
+};
+
+const getStatusByMethod = (method) => {
   if (method === "POST") return 201;
   if (method === "DELETE") return 204;
   return 200;

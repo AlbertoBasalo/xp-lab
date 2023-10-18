@@ -9,7 +9,7 @@ const getStatus = (err) => {
   return 500;
 };
 
-const ErrorHandler = (err, req, res, next) => {
+const errorHandler = (err, req, res, next) => {
   if (res.headersSent) return next(err);
   checkJwtErrors(err);
   const errInfo = {
@@ -23,12 +23,12 @@ const ErrorHandler = (err, req, res, next) => {
   res.status(errStatus).json(errInfo);
 };
 
-const handleErrors = (app, logger) => {
+const useErrorHandler = (app, logger) => {
   _logger = logger;
-  app.use(ErrorHandler);
+  app.use(errorHandler);
 };
 
-module.exports = { handleErrors };
+module.exports = { useErrorHandler };
 function checkJwtErrors(err) {
   const jtwMessages = ["No authorization token was found", "invalid token"];
   if (jtwMessages.includes(err.message)) {
