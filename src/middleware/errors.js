@@ -1,7 +1,8 @@
+const { AppError } = require("../shared/_shared");
 let _logger;
 
 /**
- * Middleware function for handling errors
+ * Middleware function for handling (log and respond) errors
  * @param {*} err the error object
  * @param {*} req the current request
  * @param {*} res the current response
@@ -9,43 +10,50 @@ let _logger;
  * @returns
  */
 const appErrorHandler = (err, req, res, next) => {
-  const appError = createAppError(err);
-  fillJwtErrorInfo(appError);
-  logAppError(appError, err.stack);
-  if (res.headersSent) return next(err);
-  const errorStatus = getErrorStatus(appError.kind);
-  res.status(errorStatus).json(appError);
+  const appError = wrapAppError(err);
+  logAppError(appError, req);
+  sendErrorResponse(res, appError);
 };
 
-const createAppError = (err) => {
-  return {
-    message: err.message || "Something went wrong",
-    kind: err.kind || "unhandled",
-    source: err.source || "unknown",
-  };
+const wrapAppError = (err) => {
+  if (err instanceof AppError) return err;
+  const isJwtError = err.message.includes("token");
+  if (isJwtError) return new AppError(err.message, "UNAUTHORIZED", "express-jwt", err);
+  return new AppError(err.message, "UNHANDLED", "unknown", err);
 };
 
-const fillJwtErrorInfo = (appError) => {
-  const jtwMessages = ["No authorization token was found", "invalid token"];
-  if (jtwMessages.includes(appError.message)) {
-    appError.kind = "UNAUTHORIZED";
-    appError.source = "jwt";
+const logAppError = (appError, req) => {
+  if (appError.kind === "UNHANDLED") {
+    const requestFullInfo = {
+      method: req.method,
+      path: req.path,
+      params: req.params,
+      query: req.query,
+      body: req.body,
+      auth: req.headers.authorization,
+    };
+    const errorEntry = { message: appError.message, error: appError.getFullInfo(), request: requestFullInfo };
+    _logger.error(errorEntry);
+  } else {
+    const requestInfo = { method: req.method, path: req.path, auth: req.headers.authorization };
+    _logger.warn({ message: appError.message, error: appError.getInfo(), request: requestInfo });
   }
 };
 
-const getErrorStatus = (kind) => {
-  if (kind === "VALIDATION") return 400;
-  if (kind === "NOT_FOUND") return 404;
-  if (kind === "UNAUTHORIZED") return 401;
-  if (kind === "FORBIDDEN") return 403;
-  if (kind === "CONFLICT") return 409;
-  return 500;
+const sendErrorResponse = (res, appError) => {
+  if (res.headersSent) return next(appError);
+  const errorStatus = getErrorStatus(appError.kind);
+  res.status(errorStatus).json(appError.getBasicInfo());
 };
 
-function logAppError(appError, stack) {
-  if (appError.kind === "unhandled") _logger.error({ ...appError, stack });
-  else _logger.warn({ ...appError });
-}
+const getErrorStatus = (kind) => {
+  if (kind === "UNHANDLED") return 500;
+  if (kind === "CONFLICT") return 409;
+  if (kind === "NOT_FOUND") return 404;
+  if (kind === "FORBIDDEN") return 403;
+  if (kind === "UNAUTHORIZED") return 401;
+  return 400;
+};
 
 const useErrorHandler = (app, logger) => {
   _logger = logger;

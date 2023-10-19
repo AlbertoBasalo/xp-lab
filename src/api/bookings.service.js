@@ -1,6 +1,6 @@
-const { AppError, MemoryRepository } = require("../../shared");
-const activities = require("../../db/activities.data.json");
-const bookings = require("../../db/bookings.data.json");
+const { AppError, MemoryRepository } = require("../shared/_shared");
+const activities = require("../db/activities.data.json");
+const bookings = require("../db/bookings.data.json");
 
 const activitiesRepository = MemoryRepository(activities);
 const bookingsRepository = MemoryRepository(bookings);

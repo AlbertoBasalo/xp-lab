@@ -1,6 +1,6 @@
-const { AppError, MemoryRepository } = require("../../shared");
+const { AppError, MemoryRepository } = require("../shared/_shared");
 // const activities = require("../../db/activities.data.json");
-const bookings = require("../../db/bookings.data.json");
+const bookings = require("../db/bookings.data.json");
 
 const activitiesRepository = MemoryRepository([]);
 const bookingsRepository = MemoryRepository(bookings);
@@ -12,7 +12,7 @@ async function readAll() {
 async function readById(id) {
   const activity = await activitiesRepository.selectById(id);
   if (!activity) {
-    throw new AppError(`Activity with id: ${id} not found `, "NOT_FOUND", "readActivity");
+    throw new AppError(`Activity with id: ${id} not found `, "NOT_FOUND", "activities.service.readById");
   }
   return activity;
 }
@@ -22,11 +22,12 @@ async function readByUser(userId) {
 
 async function readBookings(id, userId) {
   const current = await readById(id);
-  validateUser(userId, current, "readBookings");
+  validateUser(userId, current, "activities.service.readBookings");
   return await bookingsRepository.selectByKeyValue("activityId", id);
 }
 
 async function create(activity, userId) {
+  // throw new Error("Fake error");
   activity.userId = userId;
   activity.id = new Date().getTime();
   activity.createdAt = new Date().toISOString();
@@ -35,7 +36,7 @@ async function create(activity, userId) {
 
 async function update(id, activity, userId) {
   const current = await readById(id);
-  validateUser(userId, current, "updateActivity");
+  validateUser(userId, current, "activities.service.update");
   const updated = { ...current, ...activity, updatedAt: new Date().toISOString() };
   await activitiesRepository.update(id, updated);
   return updated;

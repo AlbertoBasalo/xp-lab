@@ -1,5 +1,5 @@
-const { AppError, MemoryRepository } = require("../../shared");
-const { signUser } = require("../../middleware").security;
+const { AppError, MemoryRepository } = require("../shared/_shared");
+const { signUser } = require("../middleware/_middleware").security;
 const usersRepository = MemoryRepository([]);
 
 const readById = async (id, userId) => {

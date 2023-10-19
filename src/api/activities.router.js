@@ -1,7 +1,8 @@
 const express = require("express");
-const middleware = require("../../middleware");
+const middleware = require("../middleware/_middleware");
 const service = require("./activities.service");
 
+const { debugReq } = middleware.logs;
 const { control } = middleware.controller;
 const { getId, getBody } = middleware.validations;
 const { guardUser } = middleware.security;
@@ -19,8 +20,8 @@ router
   .get("/mines", guardUser, control(service.readByUser))
   .get("/:id", getId, control(service.readById))
   .get("/:id/bookings", guardUser, getId, control(service.readBookings))
-  .post("/", guardUser, getBody, control(service.create))
+  .post("/", debugReq, guardUser, getBody, control(service.create))
   .put("/:id", guardUser, getId, getBody, control(service.update))
-  .delete("/:id", guardUser, getId, control(service.deleteById));
+  .delete("/:id", debugReq, guardUser, getId, control(service.deleteById));
 
 module.exports = router;

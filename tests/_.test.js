@@ -79,12 +79,37 @@ async function clearUserJourney(activitiesResult, userOptions, userToken, user) 
   console.log("User journey cleared", user);
 }
 
+async function forceUnauthorized() {
+  await postActivity(ACTIVITIES[0], OPTIONS_BASE);
+}
+
+async function forceForbidden() {
+  const organizerToken = await getUserToken(USERS[0]);
+  const organizerOptions = makeUserOptions(organizerToken.accessToken);
+  const activityResult = await postActivity(ACTIVITIES[0][0], organizerOptions);
+  console.log("Activity created for delete forbidden use case", activityResult.data);
+  const otherToken = await getUserToken(USERS[1]);
+  const otherOptions = makeUserOptions(otherToken.accessToken);
+  console.log("Other user token", otherToken);
+  await deleteActivity(activityResult.data.id, otherOptions);
+}
+
+async function forceRegisterConflict() {
+  await register(USERS[0]);
+  await register(USERS[0]);
+}
+
+async function forceNotFound() {
+  await getActivity(999999, OPTIONS_BASE);
+}
+
 const register = async (user) => await axios.post(REGISTER_URL, user, OPTIONS_BASE);
 const unregister = async (userId, options) => await axios.delete(`${USERS_URL}/${userId}`, options);
 const login = async (user) => await axios.post(LOGIN_URL, user, OPTIONS_BASE);
 const postActivity = async (activity, options) => await axios.post(ACTIVITIES_URL, activity, options);
 const deleteActivity = async (activityId, options) => await axios.delete(`${ACTIVITIES_URL}/${activityId}`, options);
 const getActivities = async () => await axios.get(ACTIVITIES_URL, OPTIONS_BASE);
+const getActivity = async (activityId) => await axios.get(`${ACTIVITIES_URL}/${activityId}`, OPTIONS_BASE);
 const getMyActivities = async (options) => await axios.get(`${ACTIVITIES_URL}/mines`, options);
 const postBooking = async (booking, options) => await axios.post(BOOKINGS_URL, booking, options);
 const deleteBooking = async (bookingId, options) => await axios.delete(`${BOOKINGS_URL}/${bookingId}`, options);
@@ -93,12 +118,12 @@ const getMyBookings = async (options) => await axios.get(`${BOOKINGS_URL}`, opti
 const makeUserOptions = (token) => ({ headers: { ...OPTIONS_BASE.headers, Authorization: `Bearer ${token}` } });
 const expectedError = (err) => console.log(`Expected Error: ${err.response.status}, ${err.response.data.message}`);
 const expectedResult = (res) => console.log(`Expected Result: ${res.status}, ${res.data.length || 1} items`);
-const logError = (err) => console.log(`UN - Expected Error: ${err.message}`, err.request.path);
+const logError = (err) => console.error(`UN - Expected Error: ${err.message}`, err.request.path);
 
 /**
  * Main testing flows
  */
-main = async () => {
+happyFlows = async () => {
   const alice = USERS[0];
   const aliceActivities = ACTIVITIES[0];
   const bob = USERS[1];
@@ -108,8 +133,33 @@ main = async () => {
     await organizeUserActivities(bob, bobActivities);
     await organizeAndBookActivity(alice, bob, aliceActivities[0]);
   } catch (err) {
-    console.error(err.message, { path: err.request?.path, response: err.response?.data });
+    logError(err);
   }
 };
+
+forceFailures = async () => {
+  try {
+    await forceUnauthorized();
+  } catch (err) {
+    console.info(err.message, { path: err.request?.path, response: err.response?.data });
+  }
+  try {
+    await forceRegisterConflict();
+  } catch (err) {
+    console.info(err.message, { path: err.request?.path, response: err.response?.data });
+  }
+  try {
+    await forceNotFound();
+  } catch (err) {
+    console.info(err.message, { path: err.request?.path, response: err.response?.data });
+  }
+  try {
+    await forceForbidden();
+  } catch (err) {
+    console.info(err.message, { path: err.request?.path, response: err.response?.data });
+  }
+};
+
 /** Start tests */
-main();
+// happyFlows();
+forceFailures();

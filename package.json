@@ -5,9 +5,9 @@
   "main": "",
   "scripts": {
     "start": "node src/app.js",
-    "test": "node tests/index.js",
+    "test": "node tests/_.test.js",
     "dev": "nodemon --watch src src/app.js",
-    "dev:test": "nodemon --watch tests tests/index.js"
+    "dev:test": "nodemon --watch tests tests/_.test.js"
   },
   "keywords": [
     "demo",

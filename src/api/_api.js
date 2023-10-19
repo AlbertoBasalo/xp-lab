@@ -1,8 +1,8 @@
-const activitiesRouter = require("./activities/activities.router");
-const bookingsRouter = require("./bookings/bookings.router");
-const usersRouter = require("./users/users.router");
+const activitiesRouter = require("./activities.router");
+const bookingsRouter = require("./bookings.router");
+const usersRouter = require("./users.router");
 
-const configureAppRoutes = (app, express, apiVersion) => {
+const configureApiRoutes = (app, express, apiVersion) => {
   app.get("/", (req, res) => res.send("Activity Bookings API"));
   app.use(express.json());
   app.use(`/v${apiVersion}/activities`, activitiesRouter);
@@ -13,6 +13,6 @@ const configureAppRoutes = (app, express, apiVersion) => {
 /**
  * Defines main routes for the API, attaching controllers.
  */
-const routes = { configureAppRoutes };
+const apiRoutes = { configureApiRoutes };
 
-module.exports = routes;
+module.exports = apiRoutes;
