@@ -4,12 +4,13 @@ const routes = require("./routes");
 const middleware = require("./middleware");
 
 const { parsed: env } = dotenv.config();
+const logger = middleware.logs.logger;
 const app = express();
 
-middleware.useLoggers(app);
-middleware.useSecurity(app);
-routes.configure(app, express, env.API_VERSION);
-middleware.useErrorHandler(app, middleware.logger);
+middleware.logs.useLoggers(app);
+middleware.security.useSecurity(app);
+routes.configureAppRoutes(app, express, env.API_VERSION);
+middleware.errors.useErrorHandler(app, logger);
 
 const startMessage = `Listening on ${env.PORT}, ${env.NODE_ENV} environment`;
-app.listen(env.PORT, () => middleware.logger.info(startMessage));
+app.listen(env.PORT, () => logger.info(startMessage));

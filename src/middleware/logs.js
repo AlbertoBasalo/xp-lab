@@ -1,6 +1,7 @@
 const winston = require("winston");
 const morgan = require("morgan");
 const { combine, timestamp, prettyPrint, colorize, simple } = winston.format;
+
 const today = new Date().toISOString().slice(0, 10);
 const logger = winston.createLogger({
   level: "info",
@@ -8,7 +9,7 @@ const logger = winston.createLogger({
   transports: [new winston.transports.File({ filename: `./logs/${today}.log`, level: "warn" })],
 });
 
-function useLoggers(app) {
+const useLoggers = (app) => {
   app.use(morgan("dev"));
   if (process.env.NODE_ENV !== "production") {
     logger.add(
@@ -18,6 +19,14 @@ function useLoggers(app) {
     );
   }
   return logger;
-}
+};
 
-module.exports = { logger, useLoggers };
+/**
+ * Configures and returns the application logger
+ */
+const logs = {
+  logger,
+  useLoggers,
+};
+
+module.exports = logs;

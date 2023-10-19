@@ -1,6 +1,10 @@
 const express = require("express");
-const { control, getBody, getId, guardUser } = require("../../middleware");
+const middleware = require("../../middleware");
 const service = require("./users.service");
+
+const { control } = middleware.controller;
+const { getId, getBody } = middleware.validations;
+const { guardUser } = middleware.security;
 
 /**
  * Defines the routes for the users endpoint.

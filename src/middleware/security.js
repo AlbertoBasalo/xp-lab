@@ -53,4 +53,15 @@ const useSecurity = (app) => {
   app.use(guardApiKey);
 };
 
-module.exports = { useSecurity, guardUser, getUser, signUser };
+/**
+ * Security related middleware functions.
+ * @description Configures JWT for user identification and API Key guards.
+ */
+const security = {
+  useSecurity,
+  guardUser,
+  getUser,
+  signUser,
+};
+
+module.exports = security;
