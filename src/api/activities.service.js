@@ -13,9 +13,6 @@ async function readById(id) {
   }
   return activity;
 }
-async function readByUser(userId) {
-  return await activitiesRepository.selectByKeyValue("userId", userId);
-}
 
 async function readBookings(id, userId) {
   const activity = await readById(id);
@@ -60,7 +57,6 @@ function guardIsOwner(userId, current, source) {
 const activitiesService = {
   readAll,
   readById,
-  readByUser,
   readBookings,
   create,
   update,

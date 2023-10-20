@@ -1,8 +1,16 @@
 const axios = require("axios");
-const { REGISTER_URL, USERS_URL, ACTIVITIES_URL, OPTIONS_BASE, LOGIN_URL, BOOKINGS_URL } = require("./api.settings");
+const {
+  CREDENTIALS_URL,
+  REGISTER_URL,
+  USERS_URL,
+  ACTIVITIES_URL,
+  OPTIONS_BASE,
+  LOGIN_URL,
+  BOOKINGS_URL,
+} = require("./api.settings");
 
 const register = async (user) => await axios.post(REGISTER_URL, user, OPTIONS_BASE);
-const unregister = async (userId, options) => await axios.delete(`${USERS_URL}/${userId}`, options);
+const unregister = async (userId, options) => await axios.delete(`${CREDENTIALS_URL}/${userId}`, options);
 const login = async (user) => await axios.post(LOGIN_URL, user, OPTIONS_BASE);
 const postActivity = async (activity, options) => await axios.post(ACTIVITIES_URL, activity, options);
 const deleteActivity = async (activityId, options) => await axios.delete(`${ACTIVITIES_URL}/${activityId}`, options);
