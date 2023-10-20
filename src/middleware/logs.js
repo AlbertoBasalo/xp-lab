@@ -1,5 +1,6 @@
 const winston = require("winston");
 const morgan = require("morgan");
+const { request } = require("../shared/_shared");
 const { combine, timestamp, prettyPrint, colorize, simple } = winston.format;
 
 const today = new Date().toISOString().slice(0, 10);
@@ -24,7 +25,9 @@ const logger = winston.createLogger({
 
 logger.stream = {
   write: function (message, encoding) {
-    logger.http(message);
+    // remove last \n
+    const messageClean = message.slice(0, -1);
+    logger.http(messageClean);
   },
 };
 
@@ -33,18 +36,14 @@ const useLoggers = (app) => {
 };
 
 const debugReq = (req, res, next) => {
-  const reqMessage = `${req.method} ${req.path}`;
-  const reqData = {};
-  reqData.params = req.params;
-  reqData.query = req.query;
-  reqData.body = req.body;
-  if (req.headers.authorization) reqData.auth = req.headers.authorization;
+  const reqMessage = `${new Date().toLocaleTimeString()}`;
+  const reqData = request.getRequestInfo(req);
   logger.debug(reqMessage, reqData);
   next();
 };
 
 /**
- * Configures and returns the application logger
+ * Configures the application logger and provide logging utilities
  */
 const logs = {
   logger,

@@ -1,4 +1,4 @@
-const { AppError } = require("../shared/_shared");
+const { AppError, request } = require("../shared/_shared");
 let _logger;
 
 /**
@@ -18,41 +18,36 @@ const appErrorHandler = (err, req, res, next) => {
 const wrapAppError = (err) => {
   if (err instanceof AppError) return err;
   const isJwtError = err.message.includes("token");
-  if (isJwtError) return new AppError(err.message, "UNAUTHORIZED", "express-jwt", err);
-  return new AppError(err.message, "UNHANDLED", "unknown", err);
+  if (isJwtError) return new AppError(err.message, "UNAUTHORIZED", "express-jwt");
+  return new AppError(err.message, "UNHANDLED", err.stack);
 };
 
 const logAppError = (appError, req) => {
+  const requestInfo = request.getRequestInfo(req);
+  const errorEntry = { message: appError.message, err: appError.getInfo(), req: requestInfo };
   if (appError.kind === "UNHANDLED") {
-    const requestFullInfo = {
-      method: req.method,
-      path: req.path,
-      params: req.params,
-      query: req.query,
-      body: req.body,
-      auth: req.headers.authorization,
-    };
-    const errorEntry = { message: appError.message, error: appError.getFullInfo(), request: requestFullInfo };
     _logger.error(errorEntry);
   } else {
-    const requestInfo = { method: req.method, path: req.path, auth: req.headers.authorization };
-    _logger.warn({ message: appError.message, error: appError.getInfo(), request: requestInfo });
+    _logger.warn(errorEntry);
   }
 };
 
 const sendErrorResponse = (res, appError) => {
   if (res.headersSent) return next(appError);
   const errorStatus = getErrorStatus(appError.kind);
-  res.status(errorStatus).json(appError.getBasicInfo());
+  res.status(errorStatus).json(appError.message);
 };
 
 const getErrorStatus = (kind) => {
-  if (kind === "UNHANDLED") return 500;
-  if (kind === "CONFLICT") return 409;
-  if (kind === "NOT_FOUND") return 404;
-  if (kind === "FORBIDDEN") return 403;
-  if (kind === "UNAUTHORIZED") return 401;
-  return 400;
+  const errorCodes = {
+    UNHANDLED: 500,
+    CONFLICT: 409,
+    NOT_FOUND: 404,
+    FORBIDDEN: 403,
+    UNAUTHORIZED: 401,
+  };
+  const errorCode = errorCodes[kind] || 400;
+  return errorCode;
 };
 
 const useErrorHandler = (app, logger) => {
