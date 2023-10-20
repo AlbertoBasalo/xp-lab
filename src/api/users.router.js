@@ -1,5 +1,5 @@
 const express = require("express");
-const middleware = require("../middleware/_middleware");
+const middleware = require("../middleware/_middleware.index");
 const service = require("./users.service");
 
 const { control } = middleware.controller;

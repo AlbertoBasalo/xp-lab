@@ -1,4 +1,4 @@
-const { AppError, request } = require("../shared/_shared");
+const { AppError, request } = require("../shared/_shared.index");
 let _logger;
 
 /**

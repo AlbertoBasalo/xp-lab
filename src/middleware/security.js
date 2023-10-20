@@ -1,11 +1,10 @@
 const cors = require("cors");
 const helmet = require("helmet");
 const jwt = require("jsonwebtoken");
-const dotenv = require("dotenv");
+const env = require("dotenv").config().parsed;
 const { expressjwt } = require("express-jwt");
-const { AppError } = require("../shared/_shared");
+const { AppError } = require("../shared/_shared.index");
 
-const { parsed: env } = dotenv.config();
 const secret = env.JWT_SECRET;
 const apiKey = env.API_KEY;
 const algorithms = ["HS256"];
@@ -43,7 +42,7 @@ const getUser = expressjwt({
 /**
  * Generates a valid JWT for a user ID.
  * @param {*} userId The user ID.
- * @returns A JWT for the user ID.
+ * @returns A JWT for the user ID as the sub value.
  */
 const signUser = (userId) => jwt.sign({ sub: userId }, secret, expiration);
 

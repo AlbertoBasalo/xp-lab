@@ -1,6 +1,7 @@
 const winston = require("winston");
 const morgan = require("morgan");
-const { request } = require("../shared/_shared");
+const env = require("dotenv").config().parsed;
+const { request } = require("../shared/_shared.index");
 const { combine, timestamp, prettyPrint, colorize, simple } = winston.format;
 
 const today = new Date().toISOString().slice(0, 10);
@@ -16,13 +17,13 @@ const consoleTransport = new winston.transports.Console({
   format: combine(colorize(), simple()),
 });
 
-const transports = process.env.NODE_ENV === "production" ? [fileTransport] : [fileTransport, consoleTransport];
+const transports = env.NODE_ENV === "production" ? [fileTransport] : [fileTransport, consoleTransport];
 
-const logger = winston.createLogger({
-  transports,
-  exitOnError: false,
-});
+const logger = winston.createLogger({ transports });
 
+/**
+ * Input pipe for Morgan logger
+ */
 logger.stream = {
   write: function (message, encoding) {
     // remove last \n
@@ -32,9 +33,17 @@ logger.stream = {
 };
 
 const useLoggers = (app) => {
+  // use morgan to sent requests to winston logger
   app.use(morgan("dev", { stream: logger.stream }));
 };
 
+/**
+ * Middleware function for verbose logging requests
+ * @description Cautious: this function logs the request body
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ */
 const debugReq = (req, res, next) => {
   const reqMessage = `${new Date().toLocaleTimeString()}`;
   const reqData = request.getRequestInfo(req);

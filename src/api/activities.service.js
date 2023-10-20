@@ -1,4 +1,4 @@
-const { AppError, MemoryRepository } = require("../shared/_shared");
+const { AppError, MemoryRepository } = require("../shared/_shared.index");
 // const activities = require("../../db/activities.data.json");
 const bookings = require("../db/bookings.data.json");
 

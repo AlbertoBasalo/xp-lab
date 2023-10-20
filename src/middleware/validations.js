@@ -1,4 +1,7 @@
-const { AppError } = require("../shared/_shared");
+const { AppError } = require("../shared/_shared.index");
+
+const kind = "VALIDATION";
+
 /**
  *  Middleware to extract the id from the request.
  * @description Adds the id to the args array in the request.
@@ -7,12 +10,8 @@ const { AppError } = require("../shared/_shared");
  */
 const getId = (req, res, next) => {
   const id = req.params.id;
-  if (!id) {
-    return next(new AppError("Id is required", "VALIDATION", "getId"));
-  }
-  if (isNaN(id)) {
-    return next(new AppError("Id should be a number", "VALIDATION", "getId"));
-  }
+  if (!id) return next(new AppError("Id is required", kind, "getId"));
+  if (isNaN(id)) return next(new AppError("Id should be a number", kind, "getId"));
   if (!req.args) req.args = [];
   req.args.push(id);
   next();
@@ -26,17 +25,15 @@ const getId = (req, res, next) => {
  */
 const getBody = (req, res, next) => {
   const body = req.body;
-  if (!body) {
-    return next(new AppError("Body is required", "VALIDATION", "getBody"));
-  }
+  if (!body) return next(new AppError("Body is required", kind, "getBody"));
   if (!req.args) req.args = [];
   req.args.push(body);
   next();
 };
 /**
- * Middleware to extract params and the body from the request.
- * @description Adds the params and the body to the args array in the request.
- * @throws An error if the params or the body is not present.
+ * Middleware to extract arguments from the request.
+ * @description Adds the data to an args array in the request.
+ * @throws An error if the requested args are not present.
  */
 const validations = {
   getId,
