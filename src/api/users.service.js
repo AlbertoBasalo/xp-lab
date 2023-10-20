@@ -1,5 +1,10 @@
 const { AppError, MemoryRepository } = require("../shared/_shared.index");
+const activities = require("../db/activities.data.json");
+const bookings = require("../db/bookings.data.json");
+
 const usersRepository = MemoryRepository([]);
+const activitiesRepository = MemoryRepository(activities);
+const bookingsRepository = MemoryRepository(bookings);
 
 const readById = async (id, userId) => {
   const current = await usersRepository.selectById(id);
@@ -11,6 +16,14 @@ const readByEmail = async (email) => {
   const users = await usersRepository.selectByKeyValue("email", email);
   return users[0] || undefined;
 };
+
+async function readActivities(userId) {
+  return await activitiesRepository.selectByKeyValue("userId", userId);
+}
+
+async function readBookings(userId) {
+  return await bookingsRepository.selectByKeyValue("userId", userId);
+}
 
 const create = async (user) => {
   const current = await readByEmail(user.email);
@@ -38,6 +51,8 @@ const guardIsOwner = (userId, item, source) => {
  * @description should not know about the HTTP layer nor the database layer implementation details
  */
 const usersService = {
+  readActivities,
+  readBookings,
   readById,
   readByEmail,
   create,

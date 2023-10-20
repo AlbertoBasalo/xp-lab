@@ -21,13 +21,14 @@ async function readByUser(userId) {
 }
 
 async function readBookings(id, userId) {
-  const current = await readById(id);
-  guardIsOwner(userId, current, "activities.service.readBookings");
-  return await bookingsRepository.selectByKeyValue("activityId", id);
+  const activity = await readById(id);
+  guardIsOwner(userId, activity, "activities.service.readBookings");
+  const bookings = await bookingsRepository.selectByKeyValue("activityId", id);
+  activity.bookings = bookings;
+  return activity;
 }
 
 async function create(activity, userId) {
-  // throw new Error("Fake error");
   activity.userId = userId;
   activity.id = new Date().getTime();
   activity.createdAt = new Date().toISOString();

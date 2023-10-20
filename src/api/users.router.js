@@ -17,8 +17,8 @@ const router = express.Router();
 
 router
   .get("/:id", guardUser, control(service.readById))
-  .get("/:id/activities", guardUser, (req, res, next) => res.status(204).send("Not implemented yet"))
-  .get("/:id/bookings", guardUser, (req, res, next) => res.status(204).send("Not implemented yet"))
+  .get("/:id/activities", guardUser, control(service.readActivities))
+  .get("/:id/bookings", guardUser, control(service.readBookings))
   .post("/", getBody, control(controller.register))
   .post("/register", getBody, control(controller.register))
   .post("/login", getBody, control(controller.login))
