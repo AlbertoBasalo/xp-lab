@@ -5,10 +5,10 @@
  */
 const getRequestInfo = (req) => {
   const requestInfo = {
-    method: req.method,
-    path: req.path,
+    path: `${req.method} ${req.originalUrl}`,
   };
-  if (req.headers.authorization) requestInfo.auth = req.headers.authorization.substring(0, 10);
+  const auth = req.headers.authorization;
+  if (auth) requestInfo.auth = auth.substring(0, 10);
   if (hasInfo(req.params)) {
     requestInfo.params = req.params;
   }

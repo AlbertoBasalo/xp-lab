@@ -22,7 +22,7 @@ async function readByUser(userId) {
 
 async function readBookings(id, userId) {
   const current = await readById(id);
-  validateUser(userId, current, "activities.service.readBookings");
+  guardIsOwner(userId, current, "activities.service.readBookings");
   return await bookingsRepository.selectByKeyValue("activityId", id);
 }
 
@@ -36,7 +36,7 @@ async function create(activity, userId) {
 
 async function update(id, activity, userId) {
   const current = await readById(id);
-  validateUser(userId, current, "activities.service.update");
+  guardIsOwner(userId, current, "activities.service.update");
   const updated = { ...current, ...activity, updatedAt: new Date().toISOString() };
   await activitiesRepository.update(id, updated);
   return updated;
@@ -45,11 +45,11 @@ async function update(id, activity, userId) {
 const deleteById = async (id, userId) => {
   const current = await activitiesRepository.selectById(id);
   if (!current) return;
-  validateUser(userId, current, "deleteActivity");
+  guardIsOwner(userId, current, "activities.service.deleteById");
   return await activitiesRepository.deleteById(id);
 };
 
-function validateUser(userId, current, source) {
+function guardIsOwner(userId, current, source) {
   if (userId !== current.userId) {
     throw new AppError("User is not the owner of the activity", "FORBIDDEN", source);
   }

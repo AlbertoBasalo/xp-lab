@@ -80,7 +80,7 @@ async function clearUserJourney(activitiesResult, userOptions, userToken, user) 
 }
 
 async function forceUnauthorized() {
-  await postActivity(ACTIVITIES[0], OPTIONS_BASE);
+  await postActivity(ACTIVITIES[0][0], OPTIONS_BASE);
 }
 
 async function forceForbidden() {
@@ -161,5 +161,5 @@ forceFailures = async () => {
 };
 
 /** Start tests */
-// happyFlows();
+happyFlows();
 forceFailures();

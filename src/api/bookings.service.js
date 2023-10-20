@@ -12,11 +12,9 @@ async function readAll(userId) {
 async function readById(id, userId) {
   const booking = await bookingsRepository.selectById(id);
   if (!booking) {
-    throw new AppError(`Booking with id: ${id} not found `, "NOT_FOUND", "readBooking");
+    throw new AppError(`Booking with id: ${id} not found `, "NOT_FOUND", "bookings.service.readById");
   }
-  if (userId !== booking.userId) {
-    throw new AppError("User is not the owner of the booking", "FORBIDDEN", "readBooking");
-  }
+  // ToDo: validate user is owner of booking or the activity
   return booking;
 }
 
@@ -27,7 +25,7 @@ async function readActivity(id, userId) {
 
 create = async (booking, userId) => {
   const activity = activitiesRepository.selectById(booking.activityId);
-  if (!activity) throw new AppError("Activity not found", "NOT_FOUND", "createBooking");
+  if (!activity) throw new AppError(`Activity ${booking.activityId} not found`, "NOT_FOUND", "bookings.service.create");
   booking.userId = userId;
   booking.id = new Date().getTime();
   booking.createdAt = new Date().toISOString();
@@ -36,6 +34,7 @@ create = async (booking, userId) => {
 
 async function update(id, booking, userId) {
   const current = await readById(id, userId);
+  guardIsOwner(userId, current, "bookings.service.update");
   const updated = { ...current, ...booking, updatedAt: new Date().toISOString() };
   await bookingsRepository.update(id, updated);
   return updated;
@@ -44,11 +43,15 @@ async function update(id, booking, userId) {
 const deleteById = async (id, userId) => {
   const current = await bookingsRepository.selectById(id);
   if (!current) return;
-  if (userId !== current.userId) {
-    throw new AppError("User is not the owner of the booking", "FORBIDDEN", "deleteBooking");
-  }
+  guardIsOwner(userId, current, "bookings.service.deleteById");
   return await bookingsRepository.deleteById(id);
 };
+
+function guardIsOwner(userId, current, source) {
+  if (userId !== current.userId) {
+    throw new AppError("User is not the owner of the booking", "FORBIDDEN", source);
+  }
+}
 
 /**
  * Business logic for Activities entities

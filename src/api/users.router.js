@@ -1,5 +1,6 @@
 const express = require("express");
 const middleware = require("../middleware/_middleware.index");
+const controller = require("./users.controller");
 const service = require("./users.service");
 
 const { control } = middleware.controller;
@@ -16,9 +17,11 @@ const router = express.Router();
 
 router
   .get("/:id", guardUser, control(service.readById))
-  .post("/", getBody, control(service.register))
-  .post("/register", getBody, control(service.register))
-  .post("/login", getBody, control(service.login))
+  .get("/:id/activities", guardUser, (req, res, next) => res.status(204).send("Not implemented yet"))
+  .get("/:id/bookings", guardUser, (req, res, next) => res.status(204).send("Not implemented yet"))
+  .post("/", getBody, control(controller.register))
+  .post("/register", getBody, control(controller.register))
+  .post("/login", getBody, control(controller.login))
   .delete("/:id", guardUser, getId, control(service.deleteById));
 
 module.exports = router;

@@ -19,7 +19,7 @@ const wrapAppError = (err) => {
   if (err instanceof AppError) return err;
   const isJwtError = err.message.includes("token");
   if (isJwtError) return new AppError(err.message, "UNAUTHORIZED", "express-jwt");
-  return new AppError(err.message, "UNHANDLED", err.stack);
+  return new AppError(err.message, "UNHANDLED", getSource(err.stack));
 };
 
 const logAppError = (appError, req) => {
@@ -53,6 +53,12 @@ const getErrorStatus = (kind) => {
 const useErrorHandler = (app, logger) => {
   _logger = logger;
   app.use(appErrorHandler);
+};
+
+const getSource = (stack) => {
+  const stackArray = stack.split("\n");
+  const logStack = stackArray.slice(1, 2).join().trim();
+  return logStack;
 };
 
 const errors = { useErrorHandler };
