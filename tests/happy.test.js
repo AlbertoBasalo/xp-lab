@@ -1,6 +1,13 @@
 const assert = require("assert");
 const userToken = require("./userToken");
-const { postActivity, deleteActivity, getMyActivities, postBooking, deleteBooking } = require("./axios.functions");
+const {
+  postActivity,
+  deleteActivity,
+  getMyActivities,
+  postBooking,
+  getActivityWithBookings,
+  deleteBooking,
+} = require("./axios.functions");
 const { USERS, ACTIVITIES } = require("./input.data");
 
 const shouldOrganizeActivity = async () => {
@@ -13,7 +20,7 @@ const shouldOrganizeActivity = async () => {
     activityId = activityResult.data.id;
     const myActivities = await getMyActivities(organizerToken.userId, organizerToken.options);
     assert.strictEqual(myActivities.data.length, 1);
-    console.log("   ✅ shouldOrganizeActivity passed", myActivities.data);
+    console.log("   ✅ shouldOrganizeActivity passed");
   } catch (error) {
     console.log("   ❌ shouldOrganizeActivity failed" + error.message);
   }
@@ -47,6 +54,8 @@ const shouldBookActivity = async () => {
     const booking = { activityId };
     const bookingResult = await postBooking(booking, participantOptions);
     bookingId = bookingResult.data.id;
+    const response = await getActivityWithBookings(activityId, organizerOptions);
+    assert.strictEqual(response.data.bookings.length, 1);
     console.log("   ✅ shouldBookActivity passed");
   } catch (error) {
     console.log("   ❌ shouldBookActivity failed" + error.message);

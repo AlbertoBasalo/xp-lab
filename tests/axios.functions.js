@@ -8,6 +8,8 @@ const postActivity = async (activity, options) => await axios.post(ACTIVITIES_UR
 const deleteActivity = async (activityId, options) => await axios.delete(`${ACTIVITIES_URL}/${activityId}`, options);
 const getActivities = async () => await axios.get(ACTIVITIES_URL, OPTIONS_BASE);
 const getActivity = async (activityId) => await axios.get(`${ACTIVITIES_URL}/${activityId}`, OPTIONS_BASE);
+const getActivityWithBookings = async (activityId, options) =>
+  await axios.get(`${ACTIVITIES_URL}/${activityId}/bookings`, options);
 const getMyActivities = async (userId, options) => await axios.get(`${USERS_URL}/${userId}/activities`, options);
 const postBooking = async (booking, options) => await axios.post(BOOKINGS_URL, booking, options);
 const deleteBooking = async (bookingId, options) => await axios.delete(`${BOOKINGS_URL}/${bookingId}`, options);
@@ -23,6 +25,7 @@ const axiosFunctions = {
   deleteActivity,
   getActivities,
   getActivity,
+  getActivityWithBookings,
   getMyActivities,
   postBooking,
   deleteBooking,
