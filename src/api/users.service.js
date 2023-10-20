@@ -1,10 +1,10 @@
 const { AppError, MemoryRepository } = require("../shared/_shared.index");
-const activities = require("../db/activities.data.json");
-const bookings = require("../db/bookings.data.json");
+// const activities = require("../db/activities.data.json");
+// const bookings = require("../db/bookings.data.json");
 
 const usersRepository = MemoryRepository([]);
-const activitiesRepository = MemoryRepository(activities);
-const bookingsRepository = MemoryRepository(bookings);
+const activitiesRepository = MemoryRepository([]);
+const bookingsRepository = MemoryRepository([]);
 
 const readById = async (id, userId) => {
   const current = await usersRepository.selectById(id);
@@ -18,6 +18,8 @@ const readByEmail = async (email) => {
 };
 
 async function readActivities(userId) {
+  const activities = await activitiesRepository.selectAll();
+  console.log("📡 ~ file: users.service.js ~ readActivities ~ activities", activities);
   return await activitiesRepository.selectByKeyValue("userId", userId);
 }
 

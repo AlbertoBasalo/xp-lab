@@ -1,3 +1,5 @@
+// ToDo: convert to a class with static items property
+
 const MemoryRepository = (seed) => {
   const items = seed || [];
 
