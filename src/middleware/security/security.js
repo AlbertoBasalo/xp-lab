@@ -3,7 +3,7 @@ const helmet = require("helmet");
 const jwt = require("jsonwebtoken");
 const { expressjwt } = require("express-jwt");
 const env = require("dotenv").config().parsed;
-const { AppError } = require("../../shared/_shared.index");
+const { AppError } = require("../../shared/shared.index");
 
 const secret = env.JWT_SECRET;
 const apiKey = env.API_KEY;

@@ -1,4 +1,4 @@
-const { MemoryRepository } = require("../../shared/_shared.index");
+const { MemoryRepository } = require("../../shared/shared.index");
 const usersRepository = MemoryRepository([]);
 
 module.exports = usersRepository;

@@ -1,4 +1,4 @@
-const { AppError } = require("../../middleware/middleware.index");
+const { AppError } = require("../../shared/shared.index");
 const activitiesRepository = require("./activities.repository");
 const bookingsRepository = require("../bookings/bookings.repository");
 
