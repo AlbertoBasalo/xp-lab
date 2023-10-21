@@ -1,6 +1,6 @@
-const usersRepository = require("./users.repository");
-const { AppError } = require("../shared/_shared.index");
-const { signUser } = require("../middleware/_middleware.index").security;
+const usersRepository = require("../users/users.repository");
+const { AppError } = require("../../shared/_shared.index");
+const { signUser } = require("../../middleware/middleware.index").security;
 
 const readById = async (id, userId) => {
   const current = await usersRepository.selectById(id);

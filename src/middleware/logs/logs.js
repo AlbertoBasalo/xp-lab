@@ -1,7 +1,7 @@
 const winston = require("winston");
 const morgan = require("morgan");
 const env = require("dotenv").config().parsed;
-const { request } = require("../shared/_shared.index");
+const { request } = require("../../shared/_shared.index");
 const { combine, timestamp, prettyPrint, colorize, simple } = winston.format;
 
 const today = new Date().toISOString().slice(0, 10);

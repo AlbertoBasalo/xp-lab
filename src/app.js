@@ -1,7 +1,7 @@
 const express = require("express");
-const api = require("./api/_api.index");
+const api = require("./api/api.router");
 const env = require("dotenv").config().parsed;
-const middleware = require("./middleware/_middleware.index");
+const middleware = require("./middleware/middleware.index");
 
 const logger = middleware.logs.logger;
 

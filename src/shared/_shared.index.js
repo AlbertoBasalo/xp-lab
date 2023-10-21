@@ -1,4 +1,4 @@
-const AppError = require("./app-error.class");
+const AppError = require("../middleware/logs/app-error.class");
 const request = require("./request");
 const MemoryRepository = require("./memory.repository");
 

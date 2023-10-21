@@ -1,6 +1,6 @@
-const { AppError } = require("../shared/_shared.index");
+const { AppError } = require("../../middleware/middleware.index");
 const activitiesRepository = require("./activities.repository");
-const bookingsRepository = require("./bookings.repository");
+const bookingsRepository = require("../bookings/bookings.repository");
 
 async function readAll() {
   return await activitiesRepository.selectAll();

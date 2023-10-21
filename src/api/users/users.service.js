@@ -1,5 +1,5 @@
-const activitiesRepository = require("./activities.repository");
-const bookingsRepository = require("./bookings.repository");
+const activitiesRepository = require("../activities/activities.repository");
+const bookingsRepository = require("../bookings/bookings.repository");
 
 async function readActivities(userId) {
   return await activitiesRepository.selectByKeyValue("userId", userId);

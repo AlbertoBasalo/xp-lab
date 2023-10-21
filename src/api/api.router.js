@@ -1,8 +1,8 @@
-const activitiesRouter = require("./activities.router");
-const bookingsRouter = require("./bookings.router");
-const credentialsRouter = require("./credentials.router");
-const usersRouter = require("./users.router");
-const middleware = require("../middleware/_middleware.index");
+const activitiesRouter = require("./activities/activities.router");
+const bookingsRouter = require("./bookings/bookings.router");
+const credentialsRouter = require("./credentials/credentials.router");
+const usersRouter = require("./users/users.router");
+const middleware = require("../middleware/middleware.index");
 const { guardUser } = middleware.security;
 const express = require("express");
 

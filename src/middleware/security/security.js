@@ -1,9 +1,9 @@
 const cors = require("cors");
 const helmet = require("helmet");
 const jwt = require("jsonwebtoken");
-const env = require("dotenv").config().parsed;
 const { expressjwt } = require("express-jwt");
-const { AppError } = require("../shared/_shared.index");
+const env = require("dotenv").config().parsed;
+const { AppError } = require("../../shared/_shared.index");
 
 const secret = env.JWT_SECRET;
 const apiKey = env.API_KEY;
