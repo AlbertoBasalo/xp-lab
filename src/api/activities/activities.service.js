@@ -1,4 +1,5 @@
 const { AppError, activitiesRepository, bookingsRepository } = require("../../shared/shared.index");
+const { guardIsOwner } = require("../../middleware/middleware.index").userToken;
 
 async function readAll() {
   return await activitiesRepository.selectAll();
@@ -41,12 +42,6 @@ const deleteById = async (id, userId) => {
   guardIsOwner(userId, current, "activities.service.deleteById");
   return await activitiesRepository.deleteById(id);
 };
-
-function guardIsOwner(userId, current, source) {
-  if (userId !== current.userId) {
-    throw new AppError("User is not the owner of the activity", "FORBIDDEN", source);
-  }
-}
 
 /**
  * Business logic for Activities entities

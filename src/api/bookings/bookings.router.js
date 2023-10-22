@@ -3,8 +3,8 @@ const middleware = require("../../middleware/middleware.index");
 const service = require("./bookings.service");
 
 const { control } = middleware.controller;
-const { getId, getBody } = middleware.validations;
-const { guardUser } = middleware.security;
+const { getId, getUserId, getBody } = middleware.validations;
+const { guardUser } = middleware.userToken;
 
 /**
  * Defines the routes for the bookings endpoint.
@@ -15,11 +15,11 @@ const { guardUser } = middleware.security;
 const router = express.Router();
 
 router
-  .get("/", guardUser, control(service.readAll))
-  .get("/:id", guardUser, getId, control(service.readById))
-  .get("/:id/activity", guardUser, getId, control(service.readActivity))
-  .post("/", guardUser, getBody, control(service.create))
-  .put("/:id", guardUser, getId, getBody, control(service.update))
-  .delete("/:id", guardUser, getId, control(service.deleteById));
+  .get("/", guardUser, getUserId, control(service.readAll))
+  .get("/:id", guardUser, getId, getUserId, control(service.readById))
+  .get("/:id/activity", guardUser, getId, getUserId, control(service.readActivity))
+  .post("/", guardUser, getBody, getUserId, control(service.create))
+  .put("/:id", guardUser, getId, getBody, getUserId, control(service.update))
+  .delete("/:id", guardUser, getId, getUserId, control(service.deleteById));
 
 module.exports = router;

@@ -3,8 +3,8 @@ const middleware = require("../../middleware/middleware.index");
 const service = require("./credentials.service");
 
 const { control } = middleware.controller;
-const { getId, getBody } = middleware.validations;
-const { guardUser } = middleware.security;
+const { getId, getUserId, getBody } = middleware.validations;
+const { guardUser } = middleware.userToken;
 
 /**
  * Defines the routes for the credentials endpoint.
@@ -15,9 +15,9 @@ const { guardUser } = middleware.security;
 const router = express.Router();
 
 router
-  .get("/:id", guardUser, control(service.readById))
+  .get("/:id", guardUser, getId, getUserId, control(service.readById))
   .post("/register", getBody, control(service.register))
   .post("/login", getBody, control(service.login))
-  .delete("/:id", guardUser, getId, control(service.deleteById));
+  .delete("/:id", guardUser, getId, getUserId, control(service.deleteById));
 
 module.exports = router;

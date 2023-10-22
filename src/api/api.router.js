@@ -3,7 +3,8 @@ const bookingsRouter = require("./bookings/bookings.router");
 const credentialsRouter = require("./credentials/credentials.router");
 const usersRouter = require("./users/users.router");
 const middleware = require("../middleware/middleware.index");
-const { guardUser } = middleware.security;
+const { guardUser } = middleware.userToken;
+const { debugReq } = middleware.logs;
 const express = require("express");
 
 const useRouters = (app, apiVersion) => {
@@ -16,7 +17,7 @@ const useApiRouters = () => {
   const apiRouter = express.Router();
   apiRouter.use("/activities", activitiesRouter);
   apiRouter.use("/bookings", bookingsRouter);
-  apiRouter.use("/credentials", credentialsRouter);
+  apiRouter.use("/credentials", debugReq, credentialsRouter);
   apiRouter.use("/users", guardUser, usersRouter);
   return apiRouter;
 };

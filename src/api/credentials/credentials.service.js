@@ -1,5 +1,5 @@
 const { AppError, usersRepository } = require("../../shared/shared.index");
-const { signUser } = require("../../middleware/middleware.index").security;
+const { signUser, guardIsOwner } = require("../../middleware/middleware.index").userToken;
 
 const readById = async (id, userId) => {
   const current = await usersRepository.selectById(id);
@@ -25,12 +25,6 @@ const deleteById = async (id, userId) => {
   if (!current) return;
   guardIsOwner(userId, current, "credentials.service.deleteById");
   return await usersRepository.deleteById(id);
-};
-
-const guardIsOwner = (userId, item, source) => {
-  if (userId !== item.id) {
-    throw new AppError("User is not the owner", "FORBIDDEN", source);
-  }
 };
 
 const create = async (user) => {

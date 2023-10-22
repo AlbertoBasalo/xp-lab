@@ -3,6 +3,7 @@ const middleware = require("../../middleware/middleware.index");
 const service = require("./users.service");
 
 const { control } = middleware.controller;
+const { getUserId } = middleware.validations;
 
 /**
  * Defines the routes for the users endpoint.
@@ -12,6 +13,8 @@ const { control } = middleware.controller;
  */
 const router = express.Router();
 
-router.get("/:id/activities", control(service.readActivities)).get("/:id/bookings", control(service.readBookings));
+router
+  .get("/:id/activities", getUserId, control(service.readActivities))
+  .get("/:id/bookings", getUserId, control(service.readBookings));
 
 module.exports = router;
