@@ -23,7 +23,8 @@ const guardUser = expressjwt({
 const signUser = (userId) => jwt.sign({ sub: userId }, secret, expiration);
 
 const guardIsOwner = (userId, item, source) => {
-  if (userId !== item.id) {
+  if (userId !== item.userId && userId !== item.id) {
+    console.log(`User ${userId} is not the owner`, item);
     throw new AppError("User is not the owner", "FORBIDDEN", source);
   }
 };
