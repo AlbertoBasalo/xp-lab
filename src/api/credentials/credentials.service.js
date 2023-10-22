@@ -1,5 +1,4 @@
-const usersRepository = require("../users/users.repository");
-const { AppError } = require("../../shared/shared.index");
+const { AppError, usersRepository } = require("../../shared/shared.index");
 const { signUser } = require("../../middleware/middleware.index").security;
 
 const readById = async (id, userId) => {

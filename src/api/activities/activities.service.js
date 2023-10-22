@@ -1,6 +1,4 @@
-const { AppError } = require("../../shared/shared.index");
-const activitiesRepository = require("./activities.repository");
-const bookingsRepository = require("../bookings/bookings.repository");
+const { AppError, activitiesRepository, bookingsRepository } = require("../../shared/shared.index");
 
 async function readAll() {
   return await activitiesRepository.selectAll();

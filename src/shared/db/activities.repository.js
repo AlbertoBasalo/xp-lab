@@ -1,4 +1,4 @@
-const { MemoryRepository } = require("../../shared/shared.index");
+const MemoryRepository = require("./memory.repository");
 const activitiesRepository = MemoryRepository([]);
 
 module.exports = activitiesRepository;
