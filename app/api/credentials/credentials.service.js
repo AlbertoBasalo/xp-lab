@@ -1,5 +1,8 @@
-const { AppError, usersRepository } = require("../../shared/shared.index");
-const { signUser, guardIsOwner } = require("../../middleware/middleware.index").userToken;
+const shared = require("../../shared/shared.index");
+const { db, models, utils } = shared;
+const { usersRepository } = db;
+const { AppError } = models;
+const { signUser, guardIsOwner } = utils.authorization;
 
 const readById = async (id, userId) => {
   const current = await usersRepository.selectById(id);

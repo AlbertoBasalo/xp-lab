@@ -1,3 +1,5 @@
+const express = require("express");
+
 const activitiesRouter = require("./activities/activities.router");
 const bookingsRouter = require("./bookings/bookings.router");
 const credentialsRouter = require("./credentials/credentials.router");
@@ -5,26 +7,29 @@ const usersRouter = require("./users/users.router");
 const middleware = require("../middleware/middleware.index");
 const { guardUser } = middleware.userToken;
 const { debugReq } = middleware.logs;
-const express = require("express");
 
 const useRouters = (app, apiVersion) => {
+  app.use(express.json());
   app.get("/", (req, res) => res.send("Activity Bookings API"));
-  const apiRouter = useApiRouters();
-  app.use(`/v${apiVersion}`, apiRouter);
+  const apiRouters = getApiRouters();
+  app.use(`/v${apiVersion}`, apiRouters);
 };
 
-const useApiRouters = () => {
-  const apiRouter = express.Router();
-  apiRouter.use("/activities", activitiesRouter);
-  apiRouter.use("/bookings", bookingsRouter);
-  apiRouter.use("/credentials", debugReq, credentialsRouter);
-  apiRouter.use("/users", guardUser, usersRouter);
-  return apiRouter;
+const getApiRouters = () => {
+  const apiRouters = express.Router();
+  apiRouters.use("/activities", activitiesRouter);
+  apiRouters.use("/bookings", bookingsRouter);
+  apiRouters.use("/credentials", debugReq, credentialsRouter);
+  apiRouters.use("/users", guardUser, usersRouter);
+  return apiRouters;
 };
 
 /**
  * Defines main routes for the API, attaching controllers.
  */
-const api = { useRouters };
+const api = {
+  /** Configures and sert routes for the API endpoints */
+  useRouters,
+};
 
 module.exports = api;

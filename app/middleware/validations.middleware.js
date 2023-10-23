@@ -1,4 +1,5 @@
-const { AppError } = require("../../shared/shared.index");
+const shared = require("../shared/shared.index");
+const { AppError } = shared.models;
 
 const kind = "VALIDATION";
 

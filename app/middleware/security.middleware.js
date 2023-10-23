@@ -1,12 +1,10 @@
 const cors = require("cors");
 const helmet = require("helmet");
 const env = require("dotenv").config().parsed;
-const { AppError } = require("../../shared/shared.index");
+const shared = require("../shared/shared.index");
+const { AppError } = shared.models;
 const apiKey = env.API_KEY;
 
-/**
- * Guard routes that require a valid API Key.
- */
 const guardApiKey = (req, res, next) => {
   const key = req.headers["x-api-key"];
   if (!key || key !== apiKey) {
@@ -15,6 +13,7 @@ const guardApiKey = (req, res, next) => {
   }
   next();
 };
+
 const useSecurity = (app) => {
   app.use(cors());
   app.use(helmet());
@@ -22,10 +21,13 @@ const useSecurity = (app) => {
 };
 
 /**
- * Security related middleware functions.
- * @description Configures JWT for user identification and API Key guards.
+ * Not user related security middleware functions.
+ * @description General protection and API Key guards.
  */
 const security = {
+  /**
+   * CORS, attack protection and guard routes that require a valid API Key.
+   */
   useSecurity,
 };
 

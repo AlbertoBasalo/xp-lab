@@ -1,25 +1,6 @@
-const winston = require("winston");
 const morgan = require("morgan");
-const env = require("dotenv").config().parsed;
-const { request } = require("../../shared/shared.index");
-const { combine, timestamp, prettyPrint, colorize, simple } = winston.format;
-
-const today = new Date().toISOString().slice(0, 10);
-
-const fileTransport = new winston.transports.File({
-  level: "info",
-  filename: `./logs/${today}.log`,
-  format: combine(timestamp(), prettyPrint()),
-});
-
-const consoleTransport = new winston.transports.Console({
-  level: "debug",
-  format: combine(colorize(), simple()),
-});
-
-const transports = env.NODE_ENV === "production" ? [fileTransport] : [fileTransport, consoleTransport];
-
-const logger = winston.createLogger({ transports });
+const shared = require("../shared/shared.index");
+const { logger, request } = shared.utils;
 
 /**
  * Input pipe for Morgan logger
@@ -52,11 +33,12 @@ const debugReq = (req, res, next) => {
 };
 
 /**
- * Configures the application logger and provide logging utilities
+ * Middleware functions for automatic and custom logging
  */
 const logs = {
-  logger,
+  /** Use a customized logger for every request */
   useLoggers,
+  /** Middleware function for verbose logging any request you want */
   debugReq,
 };
 

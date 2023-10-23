@@ -1,5 +1,8 @@
-const { AppError, activitiesRepository, bookingsRepository } = require("../../shared/shared.index");
-const { guardIsOwner } = require("../../middleware/middleware.index").userToken;
+const shared = require("../../shared/shared.index");
+const { db, models, utils } = shared;
+const { activitiesRepository, bookingsRepository } = db;
+const { AppError } = models;
+const { guardIsOwner } = utils.authorization;
 
 async function readAll() {
   return await activitiesRepository.selectAll();

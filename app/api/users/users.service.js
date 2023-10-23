@@ -1,4 +1,6 @@
-const { activitiesRepository, bookingsRepository } = require("../../shared/shared.index");
+const shared = require("../../shared/shared.index");
+const { db } = shared;
+const { activitiesRepository, bookingsRepository } = db;
 
 async function readActivities(userId) {
   return await activitiesRepository.selectByKeyValue("userId", userId);

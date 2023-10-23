@@ -1,5 +1,7 @@
-const { AppError, request } = require("../../shared/shared.index");
-let _logger;
+const shared = require("../shared/shared.index");
+const { utils, models } = shared;
+const { AppError } = models;
+const { logger, request } = utils;
 
 /**
  * Middleware function for handling (log and respond) errors
@@ -26,9 +28,9 @@ const logAppError = (appError, req) => {
   const requestInfo = request.getRequestInfo(req);
   const errorEntry = { message: appError.message, err: appError.getInfo(), req: requestInfo };
   if (appError.kind === "UNHANDLED") {
-    _logger.error(errorEntry);
+    logger.error(errorEntry);
   } else {
-    _logger.warn(errorEntry);
+    logger.warn(errorEntry);
   }
 };
 
@@ -50,16 +52,15 @@ const getErrorStatus = (kind) => {
   return errorCode;
 };
 
-const useErrorHandler = (app, logger) => {
-  _logger = logger;
-  app.use(appErrorHandler);
-};
-
 const getSource = (stack) => {
   const stackArray = stack.split("\n");
   const logStack = stackArray.slice(1, 2).join().trim();
   return logStack;
 };
 
-const errors = { useErrorHandler };
+/** Error handle middleware */
+const errors = {
+  /** Configures and attaches an error handler to the app */
+  useErrorHandler: (app) => app.use(appErrorHandler),
+};
 module.exports = errors;
