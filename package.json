@@ -16,7 +16,10 @@
     "express",
     "postgres"
   ],
-  "author": "Alberto Basalo",
+  "author": {
+    "name": "Alberto Basalo",
+    "url": "https://github.com/AlbertoBasalo"
+  },
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
