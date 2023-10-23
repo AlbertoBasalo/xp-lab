@@ -2,7 +2,7 @@
  * A wrapper for the System Error class.
  * @description Adds properties for the kind and the source of the error.
  */
-class AppError extends Error {
+module.exports = class AppError extends Error {
   constructor(message, kind, source) {
     super(message);
     this.name = "AppError";
@@ -16,5 +16,4 @@ class AppError extends Error {
       source: this.source,
     };
   }
-}
-module.exports = AppError;
+};

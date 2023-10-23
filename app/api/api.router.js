@@ -4,8 +4,9 @@ const activitiesRouter = require("./activities/activities.router");
 const bookingsRouter = require("./bookings/bookings.router");
 const credentialsRouter = require("./credentials/credentials.router");
 const usersRouter = require("./users/users.router");
+
 const middleware = require("../middleware/middleware.index");
-const { guardUser } = middleware.userToken;
+const { guardUser } = middleware.authentication;
 const { debugReq } = middleware.logs;
 
 const useRouters = (app, apiVersion) => {
@@ -25,11 +26,9 @@ const getApiRouters = () => {
 };
 
 /**
- * Defines main routes for the API, attaching controllers.
+ * Defines main routes for the API, attaching controllers and middleware.
  */
-const api = {
-  /** Configures and sert routes for the API endpoints */
+module.exports = api = {
+  /** Configure middleware and sets routes for the API endpoints */
   useRouters,
 };
-
-module.exports = api;

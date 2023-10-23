@@ -13,12 +13,11 @@ const guardUser = expressjwt({
  * Security related middleware functions.
  * @description Configures JWT for user identification and API Key guards.
  */
-const userToken = {
+module.exports = authentication = {
   /**
    * Guard routes that require a valid JWT.
-   * The User ID is available in req.user.sub
+   * @description The User ID is available in req.user.sub
+   * @trhows {UnauthorizedError} If the JWT is not valid
    */
   guardUser,
 };
-
-module.exports = userToken;

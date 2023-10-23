@@ -59,8 +59,7 @@ const getSource = (stack) => {
 };
 
 /** Error handle middleware */
-const errors = {
+module.exports = errorHandler = {
   /** Configures and attaches an error handler to the app */
   useErrorHandler: (app) => app.use(appErrorHandler),
 };
-module.exports = errors;

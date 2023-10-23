@@ -23,6 +23,5 @@ const getRequestInfo = (req) => {
 
 const hasInfo = (property) => Object.keys(property).length > 0;
 
-const request = { getRequestInfo };
-
-module.exports = request;
+/** Utility functions for parsing a request */
+module.exports = request = { getRequestInfo };

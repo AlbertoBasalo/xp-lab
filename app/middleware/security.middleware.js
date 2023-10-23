@@ -24,11 +24,9 @@ const useSecurity = (app) => {
  * Not user related security middleware functions.
  * @description General protection and API Key guards.
  */
-const security = {
+module.exports = security = {
   /**
    * CORS, attack protection and guard routes that require a valid API Key.
    */
   useSecurity,
 };
-
-module.exports = security;

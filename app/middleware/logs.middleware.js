@@ -35,11 +35,9 @@ const debugReq = (req, res, next) => {
 /**
  * Middleware functions for automatic and custom logging
  */
-const logs = {
+module.exports = logs = {
   /** Use a customized logger for every request */
   useLoggers,
   /** Middleware function for verbose logging any request you want */
   debugReq,
 };
-
-module.exports = logs;

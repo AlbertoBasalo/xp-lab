@@ -34,8 +34,6 @@ const isNullOrEmpty = (value) => {
  * Functions to control the flow of the request and ensure coherent response.
  * @description Handles errors and security identification.
  */
-const controller = {
+module.exports = controller = {
   control,
 };
-
-module.exports = controller;

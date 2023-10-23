@@ -11,10 +11,7 @@ const { getUserId } = middleware.validations;
  * Adds a middleware to extract args from the request.
  * Wires each route with its service function.
  */
-const router = express.Router();
-
-router
+module.exports = express
+  .Router()
   .get("/:id/activities", getUserId, control(service.readActivities))
   .get("/:id/bookings", getUserId, control(service.readBookings));
-
-module.exports = router;

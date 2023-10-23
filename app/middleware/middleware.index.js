@@ -1,26 +1,17 @@
-const controller = require("./controller.middleware");
-const errors = require("./error.handler");
-const logs = require("./logs.middleware");
-const security = require("./security.middleware");
-const userToken = require("./user-token.middleware");
-const validations = require("./validations.middleware");
-
 /**
  * Middleware express functions and configuration for security, logging, and error handling
  */
-const middleware = {
+module.exports = middleware = {
   /** Middleware function to act as a controller for a service function */
-  controller,
+  controller: require("./controller.middleware"),
   /** Middleware error handler that logs and responds to any error*/
-  errors,
+  errorHandler: require("./error-handler.middleware"),
   /** Middleware functions for automatic and custom logging*/
-  logs,
+  logs: require("./logs.middleware"),
   /** Middleware functions for generic security not related with user authentication*/
-  security,
+  security: require("./security.middleware"),
   /** Middleware to validate the request JWT and extracts the UserId */
-  userToken,
+  authentication: require("./authentication.middleware"),
   /** Middleware to extract arguments from the request.*/
-  validations,
+  validations: require("./validations.middleware"),
 };
-
-module.exports = middleware;

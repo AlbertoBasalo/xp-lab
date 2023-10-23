@@ -1,4 +1,3 @@
 const MemoryRepository = require("./memory.repository");
-const usersRepository = MemoryRepository([]);
-
-module.exports = usersRepository;
+/** In memory repository for users */
+module.exports = usersRepository = MemoryRepository([]);

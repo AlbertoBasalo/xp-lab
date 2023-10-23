@@ -53,9 +53,8 @@ const addArg = (req, arg) => {
  * @description Adds the data to an args array in the request.
  * @throws An error if the requested args are not present.
  */
-const validations = {
+module.exports = validations = {
   getId,
   getUserId,
   getBody,
 };
-module.exports = validations;

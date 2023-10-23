@@ -16,7 +16,7 @@ const guardIsOwner = (userId, item, source) => {
  * Authorization shared functions.
  * @description Generates JWT and ensures ownership.
  */
-const authorization = {
+module.exports = authorization = {
   /** Checks if the user is owner of an item
    * @param {*} userId The user ID
    * @param {*} item The item to check
@@ -31,5 +31,3 @@ const authorization = {
    */
   signUser,
 };
-
-module.exports = authorization;

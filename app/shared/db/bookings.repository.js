@@ -1,4 +1,3 @@
 const MemoryRepository = require("./memory.repository");
-const bookingsRepository = MemoryRepository([]);
-
-module.exports = bookingsRepository;
+/** In memory repository for bookings */
+module.exports = bookingsRepository = MemoryRepository([]);

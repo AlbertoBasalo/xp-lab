@@ -1,4 +1,3 @@
 const MemoryRepository = require("./memory.repository");
-const activitiesRepository = MemoryRepository([]);
-
-module.exports = activitiesRepository;
+/** In memory repository for activities */
+module.exports = MemoryRepository([]);
