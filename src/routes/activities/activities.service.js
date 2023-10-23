@@ -1,4 +1,4 @@
-const { AppError, db } = require("../../shared");
+const { AppError, db } = require("../../shared/shared.index");
 
 const activitiesRepository = db.activities;
 const bookingsRepository = db.bookings;

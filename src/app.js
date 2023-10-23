@@ -1,8 +1,8 @@
 const express = require("express");
 const dotenv = require("dotenv");
-const middleware = require("./middleware");
+const middleware = require("./middleware/middleware.index");
 const routes = require("./routes");
-const shared = require("./shared");
+const shared = require("./shared/shared.index");
 
 const { parsed: env } = dotenv.config();
 const app = express();

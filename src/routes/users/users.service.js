@@ -1,5 +1,5 @@
-const { AppError, db } = require("../../shared");
-const { signUser } = require("../../middleware");
+const { AppError, db } = require("../../shared/shared.index");
+const { signUser } = require("../../middleware/middleware.index");
 const usersRepository = db.users;
 const readById = async (id, userId) => {
   const current = await usersRepository.selectById(id);

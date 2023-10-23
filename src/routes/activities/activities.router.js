@@ -1,5 +1,5 @@
 const express = require("express");
-const { control, getId, getBody, guardUser } = require("../../middleware");
+const { control, getId, getBody, guardUser } = require("../../middleware/middleware.index");
 const service = require("./activities.service");
 
 /**

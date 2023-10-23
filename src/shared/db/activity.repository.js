@@ -1,5 +1,5 @@
 const defineRepository = (sequelize, DataTypes) => {
-  const Model = require("../../db/models/activity")(sequelize, DataTypes);
+  const Model = require("./db/models/activity")(sequelize, DataTypes);
   Model.selectAll = async () => await Model.findAll();
   Model.selectById = async (id) => await Model.findByPk(id);
   Model.selectByUserId = async (userId) => await Model.findAll({ where: { userId } });

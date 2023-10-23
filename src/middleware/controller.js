@@ -1,4 +1,4 @@
-const { AppError } = require("../shared");
+const { AppError } = require("../shared/shared.index");
 
 /**
  *  Middleware to extract the id from the request.
