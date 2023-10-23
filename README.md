@@ -16,10 +16,10 @@ npm i -D nodemon
 const path = require("path");
 
 module.exports = {
-  config: path.resolve("src", "db", "config", "config.json"),
-  "models-path": path.resolve("src", "db", "models"),
-  "seeders-path": path.resolve("src", "db", "seeders"),
-  "migrations-path": path.resolve("src", "db", "migrations"),
+  config: path.resolve("src", "shared", "db", "config", "config.json"),
+  "models-path": path.resolve("src", "shared", "db", "models"),
+  "seeders-path": path.resolve("src", "shared", "db", "seeders"),
+  "migrations-path": path.resolve("src", "shared", "db", "migrations"),
 };
 ```
 
