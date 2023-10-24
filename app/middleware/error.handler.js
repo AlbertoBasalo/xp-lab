@@ -1,4 +1,4 @@
-const logger = require("./logger");
+const { logger } = require("./logger");
 const shared = require("../shared/shared.index");
 
 const { AppError, request } = shared;

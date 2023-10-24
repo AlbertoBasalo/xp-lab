@@ -2,6 +2,7 @@ const winston = require("winston");
 const morgan = require("morgan");
 const { combine, timestamp, prettyPrint, colorize, simple } = winston.format;
 const today = new Date().toISOString().slice(0, 10);
+
 const logger = winston.createLogger({
   level: "info",
   format: combine(timestamp(), prettyPrint()),

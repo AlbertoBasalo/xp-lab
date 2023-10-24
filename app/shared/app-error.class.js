@@ -1,12 +1,19 @@
 /**
  * A wrapper for the System Error class.
- * With an additional properties for the kind of error and HTTP status code
+ * @description Adds properties for the kind and the source of the error.
  */
-class AppError extends Error {
+module.exports = class AppError extends Error {
   constructor(message, kind, source) {
     super(message);
-    this.kind = kind || "unhandled";
-    this.source = source || "unknown";
+    this.name = "AppError";
+    this.kind = kind || "UNHANDLED";
+    this.source = source || "Unknown";
   }
-}
-module.exports = AppError;
+
+  getInfo() {
+    return {
+      kind: this.kind,
+      source: this.source,
+    };
+  }
+};
