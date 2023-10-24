@@ -4,9 +4,9 @@
   "description": "Express Postgres demo app",
   "main": "",
   "scripts": {
-    "start": "node src/app.js",
+    "start": "node app/app.js",
     "test": "node tests/index.js",
-    "dev": "nodemon --watch src src/app.js",
+    "dev": "nodemon --watch src app/app.js",
     "dev:test": "nodemon --watch tests tests/index.js"
   },
   "keywords": [

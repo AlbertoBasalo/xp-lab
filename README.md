@@ -16,10 +16,10 @@ npm i -D nodemon
 const path = require("path");
 
 module.exports = {
-  config: path.resolve("src", "shared", "db", "config", "config.json"),
-  "models-path": path.resolve("src", "shared", "db", "models"),
-  "seeders-path": path.resolve("src", "shared", "db", "seeders"),
-  "migrations-path": path.resolve("src", "shared", "db", "migrations"),
+  config: path.resolve("app", "shared", "db", "config", "config.json"),
+  "models-path": path.resolve("app", "shared", "db", "models"),
+  "seeders-path": path.resolve("app", "shared", "db", "seeders"),
+  "migrations-path": path.resolve("app", "shared", "db", "migrations"),
 };
 ```
 
@@ -27,7 +27,7 @@ https://customer.elephantsql.com/instance
 
 Copy the URL from the Details tab and paste it into:
 
-- db/config/config.json file.
+- app/shared/db/config/config.json file.
 
 ```bash
 npm i pg pg-hstore sequelize
