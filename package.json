@@ -1,7 +1,10 @@
 {
   "name": "xp-dev",
   "version": "1.0.0",
-  "description": "Express Postgres demo app",
+  "description": "Node Express demo app",
+  "repository": {
+    "url": "https://github.com/AlbertoBasalo/xp-dev"
+  },
   "main": "",
   "scripts": {
     "start": "node app/app.index.js",

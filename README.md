@@ -4,10 +4,27 @@
 
 Demo API server made with Express.js, Sequelize, and PostgreSQL.
 
-```
+```bash
+# clone repository
+git clone https://github.com/AlbertoBasalo/xp-dev
+cd xp-dev
+
+# install dependencies
 npm install
+# edit with vs code
+code .
+
+# development mode
+# run server
 npm run dev
-npm tun dev:test
+# run tests
+npm run dev:test
+
+# production mode
+# run server
+npm start
+# run tests
+npm test
 
 ```
 
