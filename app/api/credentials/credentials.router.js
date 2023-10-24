@@ -17,4 +17,5 @@ module.exports = express
   .get("/:id", guardUser, getId, getUserId, control(service.readById))
   .post("/register", getBody, control(service.register))
   .post("/login", getBody, control(service.login))
+  .post("/refresh", getBody, control(service.register))
   .delete("/:id", guardUser, getId, getUserId, control(service.deleteById));

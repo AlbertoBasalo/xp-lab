@@ -8,6 +8,7 @@ const usersRouter = require("./users/users.router");
 const middleware = require("../middleware/middleware.index");
 const { guardUser } = middleware.authentication;
 const { debugReq } = middleware.logs;
+const { hashCredentials } = middleware.security;
 
 const useRouters = (app, apiVersion) => {
   app.use(express.json());
@@ -20,7 +21,7 @@ const getApiRouters = () => {
   const apiRouters = express.Router();
   apiRouters.use("/activities", activitiesRouter);
   apiRouters.use("/bookings", bookingsRouter);
-  apiRouters.use("/credentials", debugReq, credentialsRouter);
+  apiRouters.use("/credentials", hashCredentials, debugReq, credentialsRouter);
   apiRouters.use("/users", guardUser, usersRouter);
   return apiRouters;
 };

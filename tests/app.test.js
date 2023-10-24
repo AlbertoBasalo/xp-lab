@@ -5,6 +5,8 @@ const describeUsersTests = async () => {
   console.log("🧪 Users Tests");
   await userTest.shouldRegister();
   await userTest.shouldNotRegisterTwice();
+  await userTest.shouldNotLoginExpired();
+  await userTest.shouldRefreshAfterExpiration();
 };
 const describeHappyTests = async () => {
   console.log("🧪 Happy Tests");

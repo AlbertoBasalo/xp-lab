@@ -6,6 +6,11 @@ const expiration = { expiresIn: env.JWT_EXPIRES_IN };
 
 const signUser = (userId) => jwt.sign({ sub: userId }, secret, expiration);
 
+const extractUserId = (token) => {
+  const decoded = jwt.decode(token);
+  return decoded.sub;
+};
+
 const guardIsOwner = (userId, item, source) => {
   if (userId !== item.userId && userId !== item.id) {
     throw new AppError("User is not the owner", "FORBIDDEN", source);
@@ -30,4 +35,10 @@ module.exports = authorization = {
    * @returns A JWT for the user with the ID as the sub value.
    */
   signUser,
+  /**
+   * Extracts the user ID from a JWT.
+   * @param {*} token The JWT to extract the user ID from.
+   * @returns The user ID.
+   */
+  extractUserId,
 };

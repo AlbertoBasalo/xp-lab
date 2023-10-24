@@ -2,7 +2,7 @@ const shared = require("../../shared/shared.index");
 const { db, models, utils } = shared;
 const { usersRepository } = db;
 const { AppError } = models;
-const { signUser, guardIsOwner } = utils.authorization;
+const { signUser, guardIsOwner, extractUserId } = utils.authorization;
 
 const readById = async (id, userId) => {
   const current = await usersRepository.selectById(id);
@@ -21,6 +21,12 @@ const login = async (credentials) => {
     return getUserToken(user);
   }
   throw new AppError("Invalid credentials", "FORBIDDEN", "credentials.service.login");
+};
+
+const refresh = async (oldToken) => {
+  const userId = extractUserId(oldToken);
+  const user = await readById(userId);
+  return getUserToken(user);
 };
 
 const deleteById = async (id, userId) => {
@@ -52,6 +58,7 @@ const getUserToken = (user) => {
 
 const credentialsService = {
   register,
+  refresh,
   login,
   readById,
   deleteById,

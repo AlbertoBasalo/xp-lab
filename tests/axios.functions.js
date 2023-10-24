@@ -1,15 +1,20 @@
 const axios = require("axios");
-const {
-  CREDENTIALS_URL,
-  REGISTER_URL,
-  USERS_URL,
-  ACTIVITIES_URL,
-  OPTIONS_BASE,
-  LOGIN_URL,
-  BOOKINGS_URL,
-} = require("./api.settings");
+const API_URL = "http://localhost:3000/v1";
+const ACTIVITIES_URL = `${API_URL}/activities`;
+const BOOKINGS_URL = `${API_URL}/bookings`;
+const USERS_URL = `${API_URL}/users`;
+const CREDENTIALS_URL = `${API_URL}/credentials`;
+const REGISTER_URL = `${CREDENTIALS_URL}/register`;
+const REFRESH_URL = `${CREDENTIALS_URL}/refresh`;
+const LOGIN_URL = `${CREDENTIALS_URL}/login`;
+const OPTIONS_BASE = {
+  headers: {
+    "x-api-key": "xp-client",
+  },
+};
 
 const register = async (user) => await axios.post(REGISTER_URL, user, OPTIONS_BASE);
+const refresh = async (token) => await axios.post(REFRESH_URL, token, OPTIONS_BASE);
 const unregister = async (userId, options) => await axios.delete(`${CREDENTIALS_URL}/${userId}`, options);
 const login = async (user) => await axios.post(LOGIN_URL, user, OPTIONS_BASE);
 const postActivity = async (activity, options) => await axios.post(ACTIVITIES_URL, activity, options);
@@ -27,6 +32,7 @@ const makeUserOptions = (token) => ({ headers: { ...OPTIONS_BASE.headers, Author
 
 const axiosFunctions = {
   register,
+  refresh,
   unregister,
   login,
   postActivity,
