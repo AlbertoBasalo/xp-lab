@@ -1,0 +1,14 @@
+{
+  "development": {
+    "url": "postgres://postgres://in_valid-user:in_valid-password@localhost:5432/in_valid-db",
+    "dialect": "postgres"
+  },
+  "test": {
+    "url": "postgres://deleted",
+    "dialect": "postgres"
+  },
+  "production": {
+    "url": "postgres://deleted",
+    "dialect": "postgres"
+  }
+}
