@@ -2,12 +2,12 @@
   "name": "xp-dev",
   "version": "1.0.0",
   "description": "Express Postgres demo app",
-  "main": "",
+  "main": "app/app.index.js",
   "scripts": {
-    "start": "node app/app.js",
-    "test": "node tests/index.js",
-    "dev": "nodemon --watch src app/app.js",
-    "dev:test": "nodemon --watch tests tests/index.js"
+    "start": "node app/app.index.js",
+    "test": "node tests/app.test.js",
+    "dev": "nodemon --watch app app/app.index.js",
+    "dev:test": "nodemon --watch tests tests/app.test.js"
   },
   "keywords": [
     "demo",

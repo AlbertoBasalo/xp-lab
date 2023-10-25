@@ -1,6 +1,9 @@
 const express = require("express");
-const { control, getBody, getId, guardUser } = require("../../middleware/middleware.index");
+const middleware = require("../../middleware/middleware.index");
 const service = require("./users.service");
+
+const { control } = middleware.controller;
+const { getUserId } = middleware.validations;
 
 /**
  * Defines the routes for the users endpoint.
@@ -8,13 +11,7 @@ const service = require("./users.service");
  * Adds a middleware to extract args from the request.
  * Wires each route with its service function.
  */
-const router = express.Router();
-
-router
-  .get("/:id", guardUser, control(service.readById))
-  .post("/", getBody, control(service.register))
-  .post("/register", getBody, control(service.register))
-  .post("/login", getBody, control(service.login))
-  .delete("/:id", guardUser, getId, control(service.deleteById));
-
-module.exports = router;
+module.exports = express
+  .Router()
+  .get("/:id/activities", getUserId, control(service.readActivities))
+  .get("/:id/bookings", getUserId, control(service.readBookings));
