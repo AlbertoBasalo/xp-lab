@@ -1,7 +1,8 @@
-const { AppError, db } = require("../../shared/shared.index");
-
-const activitiesRepository = db.activities;
-const bookingsRepository = db.bookings;
+const shared = require("../../shared/shared.index");
+const { db, models, utils } = shared;
+const { activitiesRepository, bookingsRepository } = db;
+const { AppError } = models;
+const { guardIsOwner } = utils.authorization;
 
 async function readAll() {
   return await activitiesRepository.selectAll();
@@ -10,18 +11,17 @@ async function readAll() {
 async function readById(id) {
   const activity = await activitiesRepository.selectById(id);
   if (!activity) {
-    throw new AppError(`Activity ${id} not found `, "NOT_FOUND", "readActivity");
+    throw new AppError(`Activity with id: ${id} not found `, "NOT_FOUND", "activities.service.readById");
   }
   return activity;
 }
-async function readByUser(userId) {
-  return await activitiesRepository.selectByUserId(userId);
-}
 
 async function readBookings(id, userId) {
-  const current = await readById(id);
-  validateUser(userId, current, "readBookings");
-  return await bookingsRepository.selectByActivityId(id);
+  const activity = await readById(id);
+  guardIsOwner(userId, activity, "activities.service.readBookings");
+  const bookings = await bookingsRepository.selectByKeyValue("activityId", id);
+  activity.bookings = bookings;
+  return activity;
 }
 
 async function create(activity, userId) {
@@ -31,7 +31,7 @@ async function create(activity, userId) {
 
 async function update(id, activity, userId) {
   const current = await readById(id);
-  validateUser(userId, current, "updateActivity");
+  guardIsOwner(userId, current, "activities.service.update");
   const updated = { ...current, ...activity };
   await activitiesRepository.update(id, updated);
   return updated;
@@ -40,15 +40,9 @@ async function update(id, activity, userId) {
 const deleteById = async (id, userId) => {
   const current = await activitiesRepository.selectById(id);
   if (!current) return;
-  validateUser(userId, current, "deleteActivity");
+  guardIsOwner(userId, current, "activities.service.deleteById");
   return await activitiesRepository.deleteById(id);
 };
-
-function validateUser(userId, current, source) {
-  if (userId !== current.userId) {
-    throw new AppError(`User ${userId} is not the owner of Activity ${current.id}`, "FORBIDDEN", source);
-  }
-}
 
 /**
  * Business logic for Activities entities
@@ -57,7 +51,6 @@ function validateUser(userId, current, source) {
 const activitiesService = {
   readAll,
   readById,
-  readByUser,
   readBookings,
   create,
   update,
