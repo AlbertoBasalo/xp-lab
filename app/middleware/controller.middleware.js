@@ -1,3 +1,6 @@
+const shared = require("../shared/shared.index");
+const { utils } = shared;
+const { logger } = utils;
 /**
  * A function to control the flow of the request and ensure response content or error.
  * @param {*} serviceFn The service function to call.
@@ -9,6 +12,7 @@ const control = (serviceFn) => {
     try {
       const body = req.args ? await serviceFn(...req.args) : await serviceFn();
       const statusCode = getStatusCode(req.method, body);
+      logger.info(`Returning ${statusCode}`, body);
       res.status(statusCode).json(body);
     } catch (error) {
       next(error);

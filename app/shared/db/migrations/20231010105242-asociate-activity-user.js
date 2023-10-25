@@ -7,8 +7,10 @@ module.exports = {
       references: {
         model: "Users",
         key: "id",
+        as: "userId",
       },
       onUpdate: "CASCADE",
+      onDelete: "CASCADE",
     });
   },
   async down(queryInterface, Sequelize) {

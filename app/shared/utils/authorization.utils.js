@@ -1,6 +1,8 @@
 const jwt = require("jsonwebtoken");
 const env = require("dotenv").config().parsed;
+const logger = require("./logger.utils");
 const { AppError } = require("../models/models.index");
+const { JSON } = require("sequelize");
 const secret = env.JWT_SECRET;
 const expiration = { expiresIn: env.JWT_EXPIRES_IN };
 
@@ -12,9 +14,11 @@ const extractUserId = (token) => {
 };
 
 const guardIsOwner = (userId, item, source) => {
-  if (userId !== item.userId && userId !== item.id) {
-    throw new AppError("User is not the owner", "FORBIDDEN", source);
-  }
+  const isOwner = item.userId && item.userId == userId;
+  if (isOwner) return;
+  const isHimself = item.id && item.id == userId;
+  if (isHimself) return;
+  throw new AppError(`User ${userId} is not the owner of ${JSON.stringify(item)}`, "FORBIDDEN", source);
 };
 
 /**

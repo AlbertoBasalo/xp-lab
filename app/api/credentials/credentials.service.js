@@ -3,16 +3,18 @@ const { db, models, utils } = shared;
 const { usersRepository } = db;
 const { AppError } = models;
 const { signUser, guardIsOwner, extractUserId } = utils.authorization;
+const { logger } = utils;
 
 const readById = async (id, userId) => {
   const current = await usersRepository.selectById(id);
   if (!current) throw new AppError(`User with id: ${id} not found `, "NOT_FOUND", "credentials.service.readById");
   guardIsOwner(userId, current, "credentials.service.readById");
+  return current;
 };
 
 const register = async (user) => {
-  await create(user);
-  return getUserToken(user);
+  const createdUser = await create(user);
+  return getUserToken(createdUser);
 };
 
 const login = async (credentials) => {
@@ -24,8 +26,13 @@ const login = async (credentials) => {
 };
 
 const refresh = async (oldToken) => {
-  const userId = extractUserId(oldToken);
-  const user = await readById(userId);
+  if (!oldToken || !oldToken.accessToken)
+    throw new AppError("Empty token", "BAD_REQUEST", "credentials.service.refresh");
+  logger.debug("Refreshing token: ", oldToken);
+  const userId = extractUserId(oldToken.accessToken);
+
+  const user = await readById(userId, userId);
+  logger.debug("User found: ", user);
   return getUserToken(user);
 };
 
@@ -39,13 +46,12 @@ const deleteById = async (id, userId) => {
 const create = async (user) => {
   const current = await readByEmail(user.email);
   if (current) throw new AppError("User already exist", "CONFLICT", "credentials.service.create");
-  user.id = new Date().getTime();
-  user.createdAt = new Date().toISOString();
   return await usersRepository.insert(user);
 };
 
 const readByEmail = async (email) => {
-  const users = await usersRepository.selectByKeyValue("email", email);
+  // const users = await usersRepository.selectByKeyValue("email", email);
+  const users = await usersRepository.selectByEmail(email);
   return users[0] || undefined;
 };
 

@@ -3,6 +3,7 @@ const { db, models, utils } = shared;
 const { activitiesRepository, bookingsRepository } = db;
 const { AppError } = models;
 const { guardIsOwner } = utils.authorization;
+const { logger } = utils;
 
 async function readAll() {
   return await activitiesRepository.selectAll();
@@ -17,10 +18,14 @@ async function readById(id) {
 }
 
 async function readBookings(id, userId) {
-  const activity = await readById(id);
+  const result = await readById(id);
+  const activity = result.dataValues;
+  logger.debug(`Activity found: `, activity);
   guardIsOwner(userId, activity, "activities.service.readBookings");
   const bookings = await bookingsRepository.selectByKeyValue("activityId", id);
+  logger.debug(`Bookings for ActivityId ${id} found: `, bookings);
   activity.bookings = bookings;
+  logger.debug(`Activity with bookings: `, activity);
   return activity;
 }
 

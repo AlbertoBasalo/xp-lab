@@ -5,6 +5,8 @@ const api = require("./api/api.router");
 const middleware = require("./middleware/middleware.index");
 const shared = require("./shared/shared.index");
 
+// deleteTablesContentSequelize();
+
 const app = express();
 const logger = shared.utils.logger;
 
@@ -15,3 +17,12 @@ middleware.errorHandler.useErrorHandler(app, logger);
 
 const startMessage = `Listening on ${env.PORT}, ${env.NODE_ENV} environment`;
 app.listen(env.PORT, () => logger.info(startMessage));
+
+async function deleteTablesContentSequelize() {
+  const bookingsRepository = shared.db.bookingsRepository;
+  await bookingsRepository.deleteAll();
+  const activitiesRepository = shared.db.activitiesRepository;
+  await activitiesRepository.deleteAll();
+  const usersRepository = shared.db.usersRepository;
+  await usersRepository.deleteAll();
+}

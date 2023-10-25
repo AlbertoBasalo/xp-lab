@@ -3,6 +3,7 @@ const helmet = require("helmet");
 const crypto = require("crypto");
 const env = require("dotenv").config().parsed;
 const shared = require("../shared/shared.index");
+const { logger } = shared.utils;
 const { AppError } = shared.models;
 const apiKey = env.API_KEY;
 const secret = env.JWT_SECRET;
@@ -18,8 +19,7 @@ const guardApiKey = (req, res, next) => {
 
 const hashCredentials = (req, res, next) => {
   const credentials = req.body;
-  if (!credentials || !credentials.password) return next();
-  credentials.password = hash(credentials.password, secret);
+  if (credentials.password) credentials.password = hash(credentials.password, secret);
   next();
 };
 

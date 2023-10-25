@@ -1,6 +1,6 @@
 {
   "development": {
-    "url": "postgres://deleted",
+    "url": "postgres://voftmcro:9rs-hIJuYnhlSCb4n6mH81vKLd2UYEej@flora.db.elephantsql.com/voftmcro",
     "dialect": "postgres"
   },
   "test": {

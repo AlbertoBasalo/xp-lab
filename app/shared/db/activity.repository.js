@@ -1,14 +1,18 @@
-const defineRepository = (sequelize, DataTypes) => {
-  const Model = require("./models/activity")(sequelize, DataTypes);
-  Model.selectAll = async () => await Model.findAll();
-  Model.selectById = async (id) => await Model.findByPk(id);
-  Model.selectByKeyValue = async (key, value) => await Model.findAll({ where: { key: value } });
-  Model.selectByUserId = async (userId) => await Model.findAll({ where: { userId } });
-  Model.insert = async (item) => await Model.create(item);
-  Model.update = async (id, item) => await Model.update(item, { where: { id } });
-  Model.deleteById = async (id) => await Model.destroy({ where: { id } });
-  return Model;
-};
+const models = require("./models");
 
-const model = { defineRepository };
-module.exports = model;
+module.exports = adaptRepository = () => {
+  const ActivityModel = require("./models/activity")(models.sequelize, models.Sequelize.DataTypes);
+  ActivityModel.selectAll = async () => await ActivityModel.findAll();
+  ActivityModel.selectById = async (id) => await ActivityModel.findByPk(id);
+  ActivityModel.selectByKeyValue = async (key, value) => {
+    const filter = {};
+    filter[key] = value;
+    return await ActivityModel.findAll({ where: filter });
+  };
+  ActivityModel.selectByUserId = async (userId) => await ActivityModel.findAll({ where: { userId } });
+  ActivityModel.insert = async (item) => await ActivityModel.create(item);
+  ActivityModel.update = async (id, item) => await ActivityModel.update(item, { where: { id } });
+  ActivityModel.deleteById = async (id) => await ActivityModel.destroy({ where: { id } });
+  ActivityModel.deleteAll = async () => await ActivityModel.destroy({ where: { id: { [models.Sequelize.Op.gt]: 0 } } });
+  return ActivityModel;
+};

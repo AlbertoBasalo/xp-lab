@@ -40,6 +40,13 @@ After running the above command, create the following models:
 ```bash
 npx sequelize-cli model:generate --name User --attributes name:string,email:string,password:string
 npx sequelize-cli model:generate --name Activity --attributes name:string,description:string,price:float,quorum:integer,capacity:integer
+# manually add UserId association to Activity model
 npx sequelize-cli model:generate --name Booking --attributes activityId:integer,userId:integer,participants:integer,status:string,capacity:integer
+```
+
+Migration files are created in the app/shared/db/migrations folder.
+Every time you have changes at db structure, run the following command:
+
+```bash
 npx sequelize-cli db:migrate
 ```

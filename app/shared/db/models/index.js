@@ -11,6 +11,10 @@ const configUrl = "../config/config.json";
 const config = require(configUrl)[env];
 const db = {};
 
+const logger = require("../../utils/logger.utils");
+
+config.logging = (msg) => logger.debug(msg);
+
 let sequelize = new Sequelize(config.url, config);
 
 /** read models from file system */

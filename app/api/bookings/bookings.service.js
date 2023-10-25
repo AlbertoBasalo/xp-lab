@@ -25,9 +25,8 @@ async function readActivity(id, userId) {
 create = async (booking, userId) => {
   const activity = activitiesRepository.selectById(booking.activityId);
   if (!activity) throw new AppError(`Activity ${booking.activityId} not found`, "NOT_FOUND", "bookings.service.create");
+  // booking.id = new Date().getTime();
   booking.userId = userId;
-  booking.id = new Date().getTime();
-  booking.createdAt = new Date().toISOString();
   return await bookingsRepository.insert(booking);
 };
 

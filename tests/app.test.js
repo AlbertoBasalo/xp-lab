@@ -1,5 +1,11 @@
+const happyUserTest = require("./happy.user.test");
 const userTest = require("./user.test");
-const happyTest = require("./happy.test");
+const happyFlowTest = require("./happy.flow.test");
+
+const describeHappyUserTests = async () => {
+  console.log("🧪 Happy User Tests");
+  await happyUserTest.shouldRegister();
+};
 
 const describeUsersTests = async () => {
   console.log("🧪 Users Tests");
@@ -10,11 +16,12 @@ const describeUsersTests = async () => {
 };
 const describeHappyTests = async () => {
   console.log("🧪 Happy Tests");
-  await happyTest.shouldOrganizeActivity();
-  await happyTest.shouldBookActivity();
+  await happyFlowTest.shouldOrganizeActivity();
+  await happyFlowTest.shouldBookActivity();
 };
 
 const main = async () => {
+  await describeHappyUserTests();
   await describeUsersTests();
   await describeHappyTests();
 };

@@ -55,6 +55,7 @@ const shouldBookActivity = async () => {
     const bookingResult = await postBooking(booking, participantOptions);
     bookingId = bookingResult.data.id;
     const response = await getActivityWithBookings(activityId, organizerOptions);
+    console.log("   🔎 What getActivityWithBookings returns ", response.data);
     assert.strictEqual(response.data.bookings.length, 1);
     console.log("   ✅ shouldBookActivity passed");
   } catch (error) {

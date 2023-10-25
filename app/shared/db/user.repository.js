@@ -1,11 +1,16 @@
-const defineRepository = (sequelize, DataTypes) => {
-  const Model = require("./models/user")(sequelize, DataTypes);
-  Model.selectByKeyValue = async (key, value) => await Model.findOne({ where: { key: value } });
-  Model.selectById = async (id) => await Model.findByPk(id);
-  Model.insert = async (item) => await Model.create(item);
-  Model.deleteById = async (id) => await Model.destroy({ where: { id } });
-  return Model;
-};
+const models = require("./models");
 
-const model = { defineRepository };
-module.exports = model;
+module.exports = adaptRepository = () => {
+  const UserModel = require("./models/user")(models.sequelize, models.Sequelize.DataTypes);
+  UserModel.selectByKeyValue = async (key, value) => {
+    const filter = {};
+    filter[key] = value;
+    return await UserModel.findAll({ where: filter });
+  };
+  UserModel.selectById = async (id) => await UserModel.findByPk(id);
+  UserModel.selectByEmail = async (email) => await UserModel.findAll({ where: { email } });
+  UserModel.insert = async (item) => await UserModel.create(item);
+  UserModel.deleteById = async (id) => await UserModel.destroy({ where: { id } });
+  UserModel.deleteAll = async () => await UserModel.destroy({ where: { id: { [models.Sequelize.Op.gt]: 0 } } });
+  return UserModel;
+};

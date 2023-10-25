@@ -1,15 +1,19 @@
-const defineRepository = (sequelize, DataTypes) => {
-  const Model = require("./models/booking")(sequelize, DataTypes);
-  Model.selectAll = async () => await Model.findAll();
-  Model.selectById = async (id) => await Model.findByPk(id);
-  Model.selectByKeyValue = async (key, value) => await Model.findAll({ where: { key: value } });
-  Model.selectByUserId = async (userId) => await Model.findAll({ where: { userId } });
-  Model.selectByActivityId = async (activityId) => await Model.findAll({ where: { activityId } });
-  Model.insert = async (item) => await Model.create(item);
-  Model.update = async (id, item) => await Model.update(item, { where: { id } });
-  Model.deleteById = async (id) => await Model.destroy({ where: { id } });
-  return Model;
-};
+const models = require("./models");
 
-const model = { defineRepository };
-module.exports = model;
+module.exports = adaptRepository = () => {
+  const BookingModel = require("./models/booking")(models.sequelize, models.Sequelize.DataTypes);
+  BookingModel.selectAll = async () => await BookingModel.findAll();
+  BookingModel.selectById = async (id) => await BookingModel.findByPk(id);
+  BookingModel.selectByKeyValue = async (key, value) => {
+    const filter = {};
+    filter[key] = value;
+    return await BookingModel.findAll({ where: filter });
+  };
+  BookingModel.selectByUserId = async (userId) => await BookingModel.findAll({ where: { userId } });
+  BookingModel.selectByActivityId = async (activityId) => await BookingModel.findAll({ where: { activityId } });
+  BookingModel.insert = async (item) => await BookingModel.create(item);
+  BookingModel.update = async (id, item) => await BookingModel.update(item, { where: { id } });
+  BookingModel.deleteById = async (id) => await BookingModel.destroy({ where: { id } });
+  BookingModel.deleteAll = async () => await BookingModel.destroy({ where: { id: { [models.Sequelize.Op.gt]: 0 } } });
+  return BookingModel;
+};

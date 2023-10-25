@@ -59,6 +59,7 @@ const shouldRefreshAfterExpiration = async () => {
     await new Promise((resolve) => setTimeout(resolve, 3000));
     const response2 = await refresh(userToken);
     userToken = response2.data;
+    // console.log("   🔎 What refresh returns ", userToken);
     console.log("   ✅ shouldRefreshAfterExpiration passed " + response2.data.id);
   } catch (error) {
     console.log("   ❌ shouldRefreshAfterExpiration failed", error.message);
@@ -70,7 +71,7 @@ const beforeEach = async (user) => {
   try {
     const response = await login(user);
     const userToken = response.data;
-    const userOptions = makeUserOptions(userToken.accessToken);
+    const userOptions = makeUserOptions(userToken);
     await unregister(userToken.id, userOptions);
     console.log(" 🧹 beforeEach");
   } catch (error) {
@@ -87,6 +88,7 @@ const afterEach = async (userToken) => {
     try {
       const response2 = await refresh(userToken);
       const userToken2 = response2.data;
+      // console.log("   🔎 What refresh returns ", userToken2);
       const userOptions2 = makeUserOptions(userToken2.accessToken);
       await unregister(userToken2.id, userOptions2);
       console.log(" 🧹 afterEach clean");
@@ -96,7 +98,6 @@ const afterEach = async (userToken) => {
   }
 };
 
-// ToDo: shouldLogin
 // ToDo: shouldNotLoginWithWrongPassword
 
 const usersTests = {
