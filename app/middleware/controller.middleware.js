@@ -12,7 +12,7 @@ const control = (serviceFn) => {
     try {
       const body = req.args ? await serviceFn(...req.args) : await serviceFn();
       const statusCode = getStatusCode(req.method, body);
-      logger.info(`Returning ${statusCode}`, body);
+      logger.debug(new Date().toLocaleTimeString() + " res => ", { statusCode, body });
       res.status(statusCode).json(body);
     } catch (error) {
       next(error);

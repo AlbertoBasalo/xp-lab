@@ -1,12 +1,12 @@
 const winston = require("winston");
 const env = require("dotenv").config().parsed;
-const { combine, timestamp, prettyPrint, colorize, simple } = winston.format;
+const { combine, timestamp, prettyPrint, colorize, uncolorize, simple, json } = winston.format;
 const today = new Date().toISOString().slice(0, 10);
 
 const fileTransport = new winston.transports.File({
   level: "info",
   filename: `./logs/${today}.log`,
-  format: combine(timestamp(), prettyPrint()),
+  format: combine(timestamp(), prettyPrint(), uncolorize()),
 });
 
 const consoleTransport = new winston.transports.Console({

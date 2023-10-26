@@ -5,10 +5,10 @@ const api = require("./api/api.router");
 const middleware = require("./middleware/middleware.index");
 const shared = require("./shared/shared.index");
 
-// deleteTablesContentSequelize();
-
 const app = express();
 const logger = shared.utils.logger;
+
+// deleteTablesContentSequelize();
 
 middleware.logs.useLoggers(app);
 middleware.security.useSecurity(app);

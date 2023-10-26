@@ -9,12 +9,11 @@ const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || "development";
 const configUrl = "../config/config.json";
 const config = require(configUrl)[env];
-const db = {};
 
 const logger = require("../../utils/logger.utils");
+config.logging = (msg) => logger.debug(`${new Date().toLocaleTimeString()} ${msg}`);
 
-config.logging = (msg) => logger.debug(msg);
-
+const db = {};
 let sequelize = new Sequelize(config.url, config);
 
 /** read models from file system */

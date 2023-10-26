@@ -20,12 +20,9 @@ async function readById(id) {
 async function readBookings(id, userId) {
   const result = await readById(id);
   const activity = result.dataValues;
-  logger.debug(`Activity found: `, activity);
   guardIsOwner(userId, activity, "activities.service.readBookings");
   const bookings = await bookingsRepository.selectByKeyValue("activityId", id);
-  logger.debug(`Bookings for ActivityId ${id} found: `, bookings);
   activity.bookings = bookings;
-  logger.debug(`Activity with bookings: `, activity);
   return activity;
 }
 
@@ -35,7 +32,8 @@ async function create(activity, userId) {
 }
 
 async function update(id, activity, userId) {
-  const current = await readById(id);
+  const result = await readById(id);
+  const current = result.dataValues;
   guardIsOwner(userId, current, "activities.service.update");
   const updated = { ...current, ...activity };
   await activitiesRepository.update(id, updated);
