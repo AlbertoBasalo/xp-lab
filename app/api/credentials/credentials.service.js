@@ -25,14 +25,12 @@ const login = async (credentials) => {
   throw new AppError("Invalid credentials", "FORBIDDEN", "credentials.service.login");
 };
 
-const refresh = async (oldToken) => {
-  if (!oldToken || !oldToken.accessToken)
+const refresh = async (userToken) => {
+  if (!userToken || !userToken.accessToken)
     throw new AppError("Empty token", "BAD_REQUEST", "credentials.service.refresh");
-  logger.debug("Refreshing token: ", oldToken);
-  const userId = extractUserId(oldToken.accessToken);
-
+  const userId = extractUserId(userToken.accessToken);
   const user = await readById(userId, userId);
-  logger.debug("User found: ", user);
+  logger.debug("User refresh: ", user);
   return getUserToken(user);
 };
 
