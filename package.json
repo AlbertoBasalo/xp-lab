@@ -1,9 +1,9 @@
 {
-  "name": "xp-dev",
+  "name": "xp-lab",
   "version": "1.0.0",
   "description": "Node Express demo app",
   "repository": {
-    "url": "https://github.com/AlbertoBasalo/xp-dev"
+    "url": "https://github.com/AlbertoBasalo/xp-lab"
   },
   "main": "",
   "scripts": {
