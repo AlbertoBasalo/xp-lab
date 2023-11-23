@@ -1,4 +1,4 @@
-# xp-dev
+# xp-lab
 
 [Repository](https://github.com/AlbertoBasalo/xp-dev)
 
@@ -6,8 +6,8 @@ Demo API server made with Express.js, Sequelize, and PostgreSQL.
 
 ```bash
 # clone repository
-git clone https://github.com/AlbertoBasalo/xp-dev
-cd xp-dev
+git clone https://github.com/AlbertoBasalo/xp-lab
+cd xp-lab
 
 # install dependencies
 npm install
